@@ -65,11 +65,11 @@ def insertReturns(text):
             outtext += "\n"
     return outtext
 
-INTRO_TEXT = insertReturns("Bienvenue a la plage ! Vos bebes tortues vont naitre bientot. Vous etes la maman, 'The Trash Turtle', chargee de nettoyer la plage et de degager le chemin pour que vos bebes puissent atteindre l'ocean en toute securite. Deplacez-vous a l'aide des touches WASD ou des fleches. Pour ramasser les dechets, appuyez sur la touche ESPACE. D'autres mecanismes se reveleront a vous si vous jouez plusieurs fois. Bonne chance!")
-XRAY_TEXT = insertReturns("Essayez de jouer à nouveau et appuyez sur la touche J pour utiliser vos pouvoirs X-RAY et révéler plus de déchets."
-GO_UP_TEXT = "Essayez de jouer à nouveau et quand vous voyez un trèfle à quatre feuilles déplacez-vous vers le haut pour découvrir un espace secret de la plage."
-ALL_W_TEXT = "Vous avez découvert tous les secrets de la plage et vous avez réussi à trouver tous les déchets ! Bien joué !"
-FINAL_TEXT = "Félicitations, vous avez ramassé THIS MUCH déchets ! Mais il reste encore beaucoup de déchets sur terre. Nous devons faire attention à ne pas laisser de déchets sur la plage ou dans l'océan, car cela peut nuire aux tortues. Nous pouvons tous aider à sauver les tortues en faisant notre part pour protéger l'environnement et les océans."
+INTRO_TEXT = insertReturns("Bienvenue a la plage! Vos bebes tortues vont naitre bientot. Vous etes la maman, 'The Trash Turtle', chargee de nettoyer la plage et de degager le chemin pour que vos bebes puissent atteindre l'ocean en toute securite. Deplacez-vous a l'aide des touches WASD ou des fleches. Pour ramasser les dechets, appuyez sur la touche ESPACE. D'autres mecanismes se reveleront a vous si vous jouez plusieurs fois. Bonne chance!")
+XRAY_TEXT = insertReturns("Essayez de jouer a nouveau et appuyez sur la touche J pour utiliser vos pouvoirs X-RAY et reveler plus de dechets.")
+GO_UP_TEXT = insertReturns("Essayez de jouer a nouveau et quand vous voyez un trefle a quatre feuilles deplacez-vous vers le haut pour decouvrir un espace secret de la plage.")
+ALL_W_TEXT = insertReturns("Vous avez decouvert tous les secrets de la plage et vous avez reussi a trouver tous les dechets! Bien joue!")
+FINAL_TEXT = insertReturns("Felicitations, vous avez ramasse THIS MUCH dechets! Mais il en reste encore beacoup. Faites attention a ne pas laisser de dechets sur la plage ou dans l'ocean. Nous pouvons tous aider a sauver les tortues en faisant notre part pour proteger l'environnement et les oceans")
 
 # make sure to buffer the screen texts so that 
 
@@ -474,7 +474,7 @@ class App:
             else:
                 finalText = ALL_W_TEXT
             pyxel.text(12,12,FINAL_TEXT.replace("THIS MUCH", str(self.points)),7)
-            pyxel.text(12,70,finalText,7)
+            pyxel.text(12,74,finalText,7)
             
 
 game = App()
