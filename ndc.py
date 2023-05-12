@@ -16,6 +16,7 @@ PLAYER_SPEED = 2
 XRAY_DURATION = 60 # Frames
 PLAYER_POSITION_OFFSET = 4
 OBJECT_POSITION_OFFSET = 4
+OBJECT_POINTS = 10
 
 SCREEN_COUNT = 1 # THIS DOSE NOT INCLUDE FIRST AND FINAL SCREEN
 
@@ -146,7 +147,7 @@ class Object():
         self.sprite = CRAB
 
     def collect(self) -> int:
-        return 10
+        return OBJECT_POINTS
 
     def draw(self) -> None:
         self.sprite.draw(self.x*8, self.y*8)
