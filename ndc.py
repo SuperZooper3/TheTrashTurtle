@@ -65,7 +65,7 @@ def insertReturns(text):
             outtext += "\n"
     return outtext
 
-INTRO_TEXT = insertReturns("Bienvenue a la plage! Vos bebes tortues vont naitre bientot. Vous etes la maman, 'The Trash Turtle', chargee de nettoyer la plage et de degager le chemin pour que vos bebes puissent atteindre l'ocean en toute securite. Deplacez-vous a l'aide des touches WASD ou des fleches. Pour ramasser les dechets, appuyez sur la touche ESPACE. D'autres mecanismes se reveleront a vous si vous jouez plusieurs fois. Bonne chance!")
+INTRO_TEXT = insertReturns("Bienvenue a la plage! Vos bebes tortues vont naitre bientot. Vous etes la maman, 'The Trash Turtle', chargee de nettoyer la plage et de degager le chemin pour que vos bebes puissent atteindre l'ocean en toute securite. Deplacez-vous a l'aide des touches WASD ou des fleches. Pour ramasser les dechets, tapez la touche ESPACE. D'autres mecanismes se reveleront a vous si vous jouez plusieurs fois. Bonne chance! Taper sur ESPACE")
 XRAY_TEXT = insertReturns("Essayez de jouer a nouveau et appuyez sur la touche J pour utiliser vos pouvoirs X-RAY et reveler plus de dechets.")
 GO_UP_TEXT = insertReturns("Essayez de jouer a nouveau et quand vous voyez un trefle a quatre feuilles deplacez-vous vers le haut pour decouvrir un espace secret de la plage.")
 ALL_W_TEXT = insertReturns("Vous avez decouvert tous les secrets de la plage et vous avez reussi a trouver tous les dechets! Bien joue!")
@@ -80,13 +80,13 @@ def key_pressed(keygroup: List[int]) -> bool:
     return False
 
 class Sprite():
-    def __init__(self, u: int, v: int, w: int, h: int, colkey: int | None=None) -> None:
+    def __init__(self, u: int, v: int, w: int, h: int, colkey=None) -> None:
         self.img: int = 0
         self.u: int = u
         self.v: int = v
         self.w: int = w
         self.h: int = h
-        self.colkey: int | None = colkey
+        self.colkey= colkey
 
     def draw(self, x: int, y: int) -> None:
         pyxel.blt(x, y, self.img, self.u, self.v, self.w, self.h, self.colkey)
