@@ -75,7 +75,7 @@ class Object():
         self.sprite = CRAB
 
     def collect(self) -> int:
-        pass # return the amount of points related to the type of object
+        return 10
 
     def draw(self) -> None:
         self.sprite.draw(self.x*8, self.y*8)
@@ -94,6 +94,9 @@ class Screen():
                 x = random.randint(0, 15)
                 y = random.randint(0, 14)
             self.objects[(x, y)] = Object(x, y)
+
+    def xray(self):
+        pass
 
     def collect(self, x, y) -> int:
         if len(self.objects) == 0:
