@@ -6,8 +6,8 @@ import random
 DOCUMENTATION GOES HERE
 """
 
-MIN_OBJECTS_PER_SCREEN = 100
-MAX_OBJECTS_PER_SCREEN = 140
+MIN_OBJECTS_PER_SCREEN = 10
+MAX_OBJECTS_PER_SCREEN = 14
 COLLECTION_RADIUS = 5
 PLAYER_SPEED = 2
 
@@ -40,6 +40,7 @@ class Sprite():
         pyxel.blt(x, y, self.img, self.u, self.v, self.w, self.h, self.colkey)
 
 TURTLE_SMALL_1 = Sprite(0,0,9,9,0)
+CRAB = Sprite(0, 28, 8, 7)
         
 class Player():
     def __init__(self):
@@ -71,12 +72,13 @@ class Object():
         self.x = x
         self.y = y
         self.type = 0
+        self.sprite = CRAB
 
     def collect(self) -> int:
         pass # return the amount of points related to the type of object
 
     def draw(self) -> None:
-        pass # add drawing the proper sprite
+        self.sprite.draw(self.x*8, self.y*8)
     
 class Screen():
     def __init__(self, id):
@@ -106,8 +108,9 @@ class Screen():
         return self.objects[closest].collect() if closestDist <= COLLECTION_RADIUS else 0
 
 
-    def draw(self) -> None: # also add drawing the proper tile map
-        for obj in self.objects:
+    def draw(self) -> None:
+        pyxel.rect(0, 0, 128, 120, 10)
+        for obj in self.objects.values():
             obj.draw()
 
 class App:
@@ -116,6 +119,7 @@ class App:
         pyxel.load("ndc.pyxres")
 
         self.player = Player()
+        self.testScreen = Screen(0)
 
         pyxel.run(self.update, self.draw)
 
@@ -125,5 +129,6 @@ class App:
     def draw(self) -> None:
         pyxel.cls(0)
         self.player.draw()
+        self.testScreen.draw()
 
 game = App()
