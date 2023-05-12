@@ -48,14 +48,25 @@ SCREEN_TEXTS = {
     "1":"Malheureusement, ces creatures magnifiques sont menacees par les dechets et la pollution qui se trouvent sur les plages.",
     "2":"Les dechets tels que les sacs en plastique peuvent etre confondus avec de la nourriture par les tortues, ce qui peut entrainer leur mort.",
     "3":"Les dechets peuvent egalement bloquer leur chemin vers l'eau, ce qui les empeche de se nourrir et de se reproduire.",
-    "4":"Les tortues ont besoin de plages propres et non polluees pour pondre leurs oeufs et les faire eclore en toute securite."
-    "5":"En nettoyant les plages et en recyclant les dechets, nous pouvons aider a proteger les tortues et leur environnement."
-    "6":"L'objectif de developpement durable 14 vise a proteger et a restaurer les ecosystemes marins et cotiers, ainsi qu'a utiliser les ressources marines de maniere durable pour assurer la durabilite de notre planete."
-    "7":"En travaillant ensemble pour proteger les tortues et leur habitat, nous pouvons contribuer a preserver ces animaux incroyables pour les generations futures."
+    "4":"Les tortues ont besoin de plages propres et non polluees pour pondre leurs oeufs et les faire eclore en toute securite.",
+    "5":"En nettoyant les plages et en recyclant les dechets, nous pouvons aider a proteger les tortues et leur environnement.",
+    "6":"L'objectif de developpement durable 14 vise a proteger et a restaurer les ecosystemes marins et cotiers, ainsi qu'a utiliser les ressources marines de maniere durable pour assurer la durabilite de notre planete.",
+    "7":"En travaillant ensemble pour proteger les tortues et leur habitat, nous pouvons contribuer a preserver ces animaux incroyables pour les generations futures.",
     }
 
-INTRO_TEXT = "Bienvenue a la plage ! Vos bebes tortues vont naitre bientot. Vous etes la maman, 'The Trash Turtle', chargee de nettoyer la plage et de degager le chemin pour que vos bebes puissent atteindre l'ocean en toute securite. Deplacez-vous a l'aide des touches WASD ou des fleches. Pour ramasser les dechets, appuyez sur la touche ESPACE. D'autres mecanismes se reveleront a vous si vous jouez plusieurs fois. Bonne chance !"
-XRAY_TEXT = "Essayez de jouer à nouveau et appuyez sur la touche J pour utiliser vos pouvoirs X-RAY et révéler plus de déchets."
+def insertReturns(text):
+    # places \n every 27 characters
+    outtext = ""
+    i = 0
+    for c in text:
+        outtext += c
+        i += 1
+        if i % 27 == 0:
+            outtext += "\n"
+    return outtext
+
+INTRO_TEXT = insertReturns("Bienvenue a la plage ! Vos bebes tortues vont naitre bientot. Vous etes la maman, 'The Trash Turtle', chargee de nettoyer la plage et de degager le chemin pour que vos bebes puissent atteindre l'ocean en toute securite. Deplacez-vous a l'aide des touches WASD ou des fleches. Pour ramasser les dechets, appuyez sur la touche ESPACE. D'autres mecanismes se reveleront a vous si vous jouez plusieurs fois. Bonne chance!")
+XRAY_TEXT = insertReturns("Essayez de jouer à nouveau et appuyez sur la touche J pour utiliser vos pouvoirs X-RAY et révéler plus de déchets."
 GO_UP_TEXT = "Essayez de jouer à nouveau et quand vous voyez un trèfle à quatre feuilles déplacez-vous vers le haut pour découvrir un espace secret de la plage."
 ALL_W_TEXT = "Vous avez découvert tous les secrets de la plage et vous avez réussi à trouver tous les déchets ! Bien joué !"
 FINAL_TEXT = "Félicitations, vous avez ramassé THIS MUCH déchets ! Mais il reste encore beaucoup de déchets sur terre. Nous devons faire attention à ne pas laisser de déchets sur la plage ou dans l'océan, car cela peut nuire aux tortues. Nous pouvons tous aider à sauver les tortues en faisant notre part pour protéger l'environnement et les océans."
