@@ -45,13 +45,13 @@ COS_45: float = 0.707
 
 SCREEN_TEXTS = {
     "0":"Les tortues sont des animaux",
-    "1":"majestueux qui vivent dans les",
-    "2":"oceans du monde entier.",
-    "3":"En travaillant ensemble pour",
-    "4":"proteger les tortues et leur",
-    "5":"habitat, nous pouvons contribuer",
-    "6":"a preserver ces animaux",
-    "7":"pour les generations futures.",
+    "1":"majestueux. En travaillant",
+    "2":"ensemble pour proteger les",
+    "3":"tortues et leur habitat, nous",
+    "4":"pouvons contribuer a",
+    "5":"preserver ces animaux.",
+    "6":"Travaillons ensemble pour",
+    "7":"l'ODD 14 de l'ONU.",
     }
 
 def insertReturns(text):
