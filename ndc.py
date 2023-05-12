@@ -82,6 +82,7 @@ class Screen():
     def __init__(self, id):
         self.id = id
         self.tilemap = 0
+        self.above = False # Change later
         self.objectCount = random.randint(MIN_OBJECTS_PER_SCREEN, MAX_OBJECTS_PER_SCREEN)
         self.objects = {}
         for _ in range(self.objectCount):
