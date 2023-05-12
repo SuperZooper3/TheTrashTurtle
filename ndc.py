@@ -14,8 +14,8 @@ MAX_HIDDEN_OBJECTS_PER_SCREEN = 14
 COLLECTION_RADIUS = 5
 PLAYER_SPEED = 2
 XRAY_DURATION = 60 # Frames
-PLAYER_POSITION_OFFSET = 4
-OBJECT_POSITION_OFFSET = 4
+PLAYER_POSITION_OFFSET = (4, 4)
+OBJECT_POSITION_OFFSET = (5, 5)
 OBJECT_POINTS = 1
 
 ADDITIONAL_NORMAL_SCREENS = 2 # THIS DOES NOT INCLUDE FIRST AND FINAL SCREEN, OR THE FIRST 2 NORMAL SCREENS
@@ -109,6 +109,8 @@ CIG = Sprite(0,196,10,10,7)
 X_CIG = Sprite(0,207,10,10,7)
 
 CRAB = Sprite(0, 28, 8, 7)
+NORMAL_SPRITES = [CRAB]
+HIDDEN_SPRITES = [CRAB]
         
 class Player():
     def __init__(self, screen):
@@ -183,8 +185,8 @@ class Player():
         return transitionStatus
 
     def draw(self) -> None:
-        BIG_TURTULES[self.lastDirection][int(pyxel.frame_count/FRAMES_PER_BIG_WALK)%len(BIG_TURTULES[self.lastDirection])].draw(self.x-PLAYER_POSITION_OFFSET,self.y-PLAYER_POSITION_OFFSET)
-        TRASH_BAGS[0].draw(self.x-PLAYER_POSITION_OFFSET,self.y-PLAYER_POSITION_OFFSET)
+        BIG_TURTULES[self.lastDirection][int(pyxel.frame_count/FRAMES_PER_BIG_WALK)%len(BIG_TURTULES[self.lastDirection])].draw(self.x-PLAYER_POSITION_OFFSET[0],self.y-PLAYER_POSITION_OFFSET[1])
+        TRASH_BAGS[0].draw(self.x-PLAYER_POSITION_OFFSET[0],self.y-PLAYER_POSITION_OFFSET[1])
 
 
 class Object():
@@ -193,13 +195,16 @@ class Object():
         self.y = y
         self.hidden = hidden
         self.type = inputType
-        self.sprite = CRAB
+        if not hidden:
+            self.sprite = random.choice(NORMAL_SPRITES)
+        else:
+            self.sprite = random.choice(HIDDEN_SPRITES)
 
     def collect(self) -> int:
         return OBJECT_POINTS
 
     def draw(self) -> None:
-        self.sprite.draw(self.x*8, self.y*8)
+        self.sprite.draw(self.x*10+4, self.y*10+5)
     
 class Screen():
     def __init__(self, id, inputType): # Types are "BOTTOM", "TOP", "NORMAL", "START", "END"
@@ -217,19 +222,23 @@ class Screen():
             self.objectCount = random.randint(MIN_OBJECTS_PER_SCREEN, MAX_OBJECTS_PER_SCREEN)
             self.objects: Dict[Tuple[int, int], Object] = {}
             for _ in range(self.objectCount):
-                x = random.randint(0, 15)
-                y = random.randint(0, 14)
+                if len(self.objects) >= 132:
+                    break
+                x = random.randint(0, 11)
+                y = random.randint(0, 10)
                 while (x, y) in self.objects:
-                    x = random.randint(0, 15)
-                    y = random.randint(0, 14)
+                    x = random.randint(0, 11)
+                    y = random.randint(0, 10)
                 self.objects[(x, y)] = Object(x, y, 0, False)
             self.hiddenObjectCount = random.randint(MIN_HIDDEN_OBJECTS_PER_SCREEN, MAX_HIDDEN_OBJECTS_PER_SCREEN)
             for _ in range(self.objectCount):
-                x = random.randint(0, 15)
-                y = random.randint(0, 14)
+                if len(self.objects) >= 132:
+                    break
+                x = random.randint(0, 11)
+                y = random.randint(0, 10)
                 while (x, y) in self.objects:
-                    x = random.randint(0, 15)
-                    y = random.randint(0, 14)
+                    x = random.randint(0, 11)
+                    y = random.randint(0, 10)
                 self.objects[(x, y)] = Object(x, y, 0, True)
 
     def xray(self):
@@ -244,7 +253,7 @@ class Screen():
             closestDist = float("inf")
             closest: Tuple[int, int] = (-1, -1)
             for coords in self.objects.keys():
-                dist = sqrt((coords[0]*8+OBJECT_POSITION_OFFSET - x)**2 + (coords[1]*8+OBJECT_POSITION_OFFSET - y)**2) # Take the distance between the player and the middle of the object tile
+                dist = sqrt((coords[0]*10+4+OBJECT_POSITION_OFFSET[0] - x)**2 + (coords[1]*10+5+OBJECT_POSITION_OFFSET[1] - y)**2) # Take the distance between the player and the middle of the object tile
                 if dist < closestDist:
                     closest = coords
                     closestDist = dist
@@ -312,8 +321,6 @@ class App:
         
         self.current_screen = self.screens[self.current_screen_id]
         self.player.update_current_screen(self.current_screen)
-
-
 
     def draw(self) -> None:
         pyxel.cls(0)
