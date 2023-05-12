@@ -121,7 +121,7 @@ X_STRAWS = Sprite(0,185,10,10,7)
 CIG = Sprite(0,196,10,10,7)
 X_CIG = Sprite(0,207,10,10,7)
 
-CLOVER = Sprite(42,168,10,10,7)
+CLOVER = Sprite(24,168,10,10,7)
 
 CRAB = Sprite(0, 28, 8, 7)
 
