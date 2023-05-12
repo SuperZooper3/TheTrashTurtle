@@ -1,5 +1,5 @@
 from math import sqrt
-from typing import Dict, Tuple
+from typing import Dict, List, Tuple
 import pyxel
 import random
 
@@ -13,15 +13,20 @@ MIN_HIDDEN_OBJECTS_PER_SCREEN = 10
 MAX_HIDDEN_OBJECTS_PER_SCREEN = 14
 COLLECTION_RADIUS = 5
 PLAYER_SPEED = 2
-SMALL_TURTLE_SPEED = 2
+SMALL_TURTLE_SPEED = 1
 XRAY_DURATION = 60 # Frames
 PLAYER_POSITION_OFFSET = (4, 4)
+SMALL_TURTLE_POSITION_OFFSET = (4, 4)
 OBJECT_POSITION_OFFSET = (5, 5)
 OBJECT_POINTS = 1
-SMALL_TURTLE_STOP = 110
+SMALL_TURTLE_STOP = 140
+MAX_SMALL_TURTLES = 50
 
 ADDITIONAL_NORMAL_SCREENS = 2 # THIS DOES NOT INCLUDE FIRST AND FINAL SCREEN, OR THE FIRST 2 NORMAL SCREENS
 UP_SCREENS = 1 # NOT COUNTED IN NORMAL SCREENS
+
+FRAMES_PER_BIG_WALK = 10
+FRAMES_PER_SMALL_WALK = 10
 
 UP_KEYS = [pyxel.KEY_W,pyxel.KEY_UP]
 DOWN_KEYS = [pyxel.KEY_S,pyxel.KEY_DOWN]
@@ -102,8 +107,6 @@ BIG_TURTULE_1_DOWN = Sprite(64,0,16,16,0)
 BIG_TURTULE_2_DOWN = Sprite(64,16,16,16,0)
 
 BIG_TURTULES = [[BIG_TURTULE_1_RIGHT,BIG_TURTULE_2_RIGHT],[BIG_TURTULE_1_LEFT,BIG_TURTULE_2_LEFT],[BIG_TURTULE_1_UP,BIG_TURTULE_2_UP],[BIG_TURTULE_1_DOWN,BIG_TURTULE_2_DOWN]]
-
-FRAMES_PER_BIG_WALK = 10
 
 TRASH_BAG_1 = Sprite(16,72,16,16,7)
 TRASH_BAG_2 = Sprite(32,72,16,16,7)
@@ -320,11 +323,23 @@ class SmallTurtle:
             self.speed = 0
     
     def draw(self) -> None:
-        pass
+        SMALL_TURTULES[int(pyxel.frame_count/FRAMES_PER_SMALL_WALK)%len(SMALL_TURTULES)].draw(self.x-SMALL_TURTLE_POSITION_OFFSET[0],self.y-SMALL_TURTLE_POSITION_OFFSET[1])
 
 
 class Cutscene:
-    pass
+    def __init__(self, numTurtles) -> None:
+        self.over = False
+        self.smallTurtles: List[SmallTurtle] = []
+        for _ in range(numTurtles):
+            self.smallTurtles.append(SmallTurtle(random.randint(-205, -5), random.randint(10, 110)))
+    
+    def update(self) -> None:
+        for turtle in self.smallTurtles:
+            turtle.update()
+    
+    def draw(self) -> None:
+        for turtle in self.smallTurtles:
+            turtle.draw()
 
 
 class App:
