@@ -13,6 +13,7 @@ MIN_HIDDEN_OBJECTS_PER_SCREEN = 10
 MAX_HIDDEN_OBJECTS_PER_SCREEN = 14
 COLLECTION_RADIUS = 5
 PLAYER_SPEED = 2
+SMALL_TURTLE_SPEED = 2
 XRAY_DURATION = 60 # Frames
 PLAYER_POSITION_OFFSET = (4, 4)
 OBJECT_POSITION_OFFSET = (5, 5)
@@ -42,7 +43,7 @@ INTRO_TEXT = "Welcome text goes here"
 XRAY_TEXT = "xray text goes here"
 GO_UP_TEXT = "go up text goes here"
 ALL_W_TEXT = "YOU WON MOTHERFUCKER"
-FINAL_TEXT = "YOU SAVED THE TURTULES"
+FINAL_TEXT = "YOU SAVED THE TURTLES"
 
 # make sure to buffer the screen texts so that 
 
@@ -120,11 +121,12 @@ X_STRAWS = Sprite(0,185,10,10,7)
 CIG = Sprite(0,196,10,10,7)
 X_CIG = Sprite(0,207,10,10,7)
 
-CLOVER = SPRITE(42,168,10,10,7)
+CLOVER = Sprite(42,168,10,10,7)
 
 CRAB = Sprite(0, 28, 8, 7)
-NORMAL_SPRITES = [CRAB]
-HIDDEN_SPRITES = [CRAB]
+
+NORMAL_SPRITES = [SODA_CAN, STRAWS, CIG]
+HIDDEN_SPRITES = [X_SODA_CAN, X_STRAWS, X_CIG]
         
 class Player():
     def __init__(self, screen):
@@ -164,7 +166,7 @@ class Player():
         transitionStatus = "None"
 
         if self.y < 0:
-            if not self.current_screen.type == "DOWN": # if there is no above transitoin, clip the y
+            if not self.current_screen.type == "DOWN": # if there is no above transition, clip the y
                 self.y = 0
             else: # we're going to transition next frame
                 self.y = 120 # start at the bottom of the screen
@@ -291,6 +293,20 @@ class Screen():
                     obj.draw()
 
         pyxel.text(1,121,SCREEN_TEXTS.get(self.id,""),0)
+
+
+class SmallTurtle:
+    def __init__(self, x, y) -> None:
+        self.x = x
+        self.y = y
+    
+    def update(self):
+        self.x += SMALL_TURTLE_SPEED
+
+
+class Cutscene:
+    pass
+
 
 class App:
     def __init__(self):
