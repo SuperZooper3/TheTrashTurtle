@@ -386,7 +386,7 @@ class App:
         self.finished = False
         self.playerControl = False
         self.cutscenePlaying = False
-        self.cutscene = None
+        self.cutscene = Cutscene(0)
 
         pyxel.run(self.update, self.draw)
 
