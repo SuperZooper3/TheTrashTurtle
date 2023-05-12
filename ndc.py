@@ -9,15 +9,15 @@ MIN_OBJECTS_PER_SCREEN = 100
 MAX_OBJECTS_PER_SCREEN = 140
 PLAYER_SPEED = 2
 
-UPKEYS = [pyxel.KEY_W,pyxel.KEY_UP]
-DOWNKEYS = [pyxel.KEY_S,pyxel.KEY_DOWN]
-LEFTKEYS = [pyxel.KEY_A,pyxel.KEY_LEFT]
-RIGHTKEYS = [pyxel.KEY_D,pyxel.KEY_RIGHT]
-COLLECTKEYS = [pyxel.KEY_SPACE]
-XRAYKEYS = [pyxel.KEY_J]
+UP_KEYS = [pyxel.KEY_W,pyxel.KEY_UP]
+DOWN_KEYS = [pyxel.KEY_S,pyxel.KEY_DOWN]
+LEFT_KEYS = [pyxel.KEY_A,pyxel.KEY_LEFT]
+RIGHT_KEYS = [pyxel.KEY_D,pyxel.KEY_RIGHT]
+COLLECT_KEYS = [pyxel.KEY_SPACE]
+XRAY_KEYS = [pyxel.KEY_J]
 
 
-COS45 = 0.707
+COS_45 = 0.707
 
 def key_pressed(keygroup):
     for key in keygroup:
@@ -36,6 +36,8 @@ class Sprite():
 
     def draw(self, x, y) -> None:
         pyxel.blt(x, y, self.img, self.u, self.v, self.w, self.h, self.colkey)
+
+TURTLE_SMALL_1 = Sprite(0,0,9,9,0)
         
 class Player():
     def __init__(self):
@@ -44,23 +46,23 @@ class Player():
 
     def update(self) -> None:
         speed = PLAYER_SPEED
-        if (key_pressed(UPKEYS) or key_pressed(DOWNKEYS)) and (key_pressed(RIGHTKEYS) or key_pressed(LEFTKEYS)): # we are moving diag
-            speed *= COS45
+        if (key_pressed(UP_KEYS) or key_pressed(DOWN_KEYS)) and (key_pressed(RIGHT_KEYS) or key_pressed(LEFT_KEYS)): # we are moving diag
+            speed *= COS_45
         
-        if key_pressed(UPKEYS):
+        if key_pressed(UP_KEYS):
             self.y -= speed
         
-        if key_pressed(DOWNKEYS):
+        if key_pressed(DOWN_KEYS):
             self.y += speed
 
-        if key_pressed(LEFTKEYS):
+        if key_pressed(LEFT_KEYS):
             self.x -= speed
         
-        if key_pressed(RIGHTKEYS):
+        if key_pressed(RIGHT_KEYS):
             self.x += speed
 
     def draw(self) -> None:
-        pass
+        TURTLE_SMALL_1.draw(self.x,self.y)
 
 class Object():
     def __init__(self, x, y):
@@ -96,12 +98,15 @@ class App:
         pyxel.init(128, 128, title="NDC 2023")
         pyxel.load("ndc.pyxres")
 
+        self.player = Player()
+
         pyxel.run(self.update, self.draw)
 
     def update(self) -> None:
-        pass
+        self.player.update()
 
     def draw(self) -> None:
-        pyxel.text(55, 41, "Hello, world!", pyxel.frame_count % 16)
+        pyxel.cls(0)
+        self.player.draw()
 
 game = App()
