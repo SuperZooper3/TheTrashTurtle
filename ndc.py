@@ -9,12 +9,17 @@ MIN_OBJECTS_PER_SCREEN = 100
 MAX_OBJECTS_PER_SCREEN = 140
 
 class Sprite():
-    def __init__(self) -> None:
-        pass
+    def __init__(self, u, v, w, h, colkey=None) -> None:
+        self.img = 0
+        self.u = u
+        self.v = v
+        self.w = w
+        self.h = h
+        self.colkey = colkey
 
-    def draw(self):
-        pass
-
+    def draw(self, x, y) -> None:
+        pyxel.blt(x, y, self.img, self.u, self.v, self.w, self.h, self.colkey)
+        
 class Player():
     def __init__(self):
         pass
