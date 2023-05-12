@@ -81,10 +81,10 @@ class Object():
         self.sprite.draw(self.x*8, self.y*8)
     
 class Screen():
-    def __init__(self, id):
+    def __init__(self, id, inputType): # Types are "BOTTOM", "TOP", "NORMAL", "START", "END"
         self.id = id
         self.tilemap = 0
-        self.above = False # Change later
+        self.type = inputType # Change later
         self.objectCount = random.randint(MIN_OBJECTS_PER_SCREEN, MAX_OBJECTS_PER_SCREEN)
         self.objects = {}
         for _ in range(self.objectCount):
