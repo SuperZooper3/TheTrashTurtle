@@ -65,6 +65,22 @@ END_TILEMAP = Tilemap(0,16,0)
 
 
 TURTLE_SMALL_1 = Sprite(0,0,9,9,0)
+TURTLE_SMALL_2 = Sprite(0,10,7,9,0)
+TURTLE_SMALL_3 = Sprite(0,18,9,9,0)
+
+SMALL_TURTULES = [TURTLE_SMALL_1,TURTLE_SMALL_2,TURTLE_SMALL_3]
+
+BIG_TURTULE_1 = Sprite(10,0,14,9,0)
+BIG_TURTULE_2 = Sprite(10,12,14,9,0)
+
+BIG_TURTULES = [BIG_TURTULE_1,BIG_TURTULE_2]
+
+FRAMES_PER_BIG_WALK = 10
+
+TRASH_BAG_1 = Sprite(17,82,7,6,7)
+
+TRASH_BAGS = [TRASH_BAG_1]
+
 CRAB = Sprite(0, 28, 8, 7)
         
 class Player():
@@ -136,7 +152,9 @@ class Player():
         return transitionStatus
 
     def draw(self) -> None:
-        TURTLE_SMALL_1.draw(self.x-PLAYER_POSITION_OFFSET,self.y-PLAYER_POSITION_OFFSET)
+        BIG_TURTULES[int(pyxel.frame_count/FRAMES_PER_BIG_WALK)%len(BIG_TURTULES)].draw(self.x-PLAYER_POSITION_OFFSET,self.y-PLAYER_POSITION_OFFSET)
+        TRASH_BAGS[0].draw(self.x-PLAYER_POSITION_OFFSET,self.y-PLAYER_POSITION_OFFSET)
+
 
 class Object():
     def __init__(self, x, y, inputType, hidden=False):
