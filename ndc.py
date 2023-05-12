@@ -60,9 +60,10 @@ class Tilemap():
         pyxel.bltm(x, y, self.tm, self.u, self.v, self.w, self.h)
 
 NORMAL_TILEMAP_1 = Tilemap(0,0,0)
-START_TILEMAP = Tilemap(0,0,16)
-END_TILEMAP = Tilemap(0,16,0)
+START_TILEMAP = Tilemap(0,0,128)
+END_TILEMAP = Tilemap(0,128,0)
 
+NORMAL_TILEMAPS = [NORMAL_TILEMAP_1]
 
 TURTLE_SMALL_1 = Sprite(0,0,9,9,0)
 CRAB = Sprite(0, 28, 8, 7)
@@ -155,54 +156,63 @@ class Object():
 class Screen():
     def __init__(self, id, inputType): # Types are "BOTTOM", "TOP", "NORMAL", "START", "END"
         self.id = id
-        self.tile = 0
         self.type = inputType
         self.scan = False
         self.scanEnd = -1
-        self.objectCount = random.randint(MIN_OBJECTS_PER_SCREEN, MAX_OBJECTS_PER_SCREEN)
-        self.objects: Dict[Tuple[int, int], Object] = {}
-        for _ in range(self.objectCount):
-            x = random.randint(0, 15)
-            y = random.randint(0, 14)
-            while (x, y) in self.objects:
+        if self.type == "START":
+            self.tilemap = START_TILEMAP
+        elif self.type == "END":
+            self.tilemap = END_TILEMAP
+        else:
+            self.tilemap = random.choice(NORMAL_TILEMAPS)
+        if self.type not in ("START", "END"):
+            self.objectCount = random.randint(MIN_OBJECTS_PER_SCREEN, MAX_OBJECTS_PER_SCREEN)
+            self.objects: Dict[Tuple[int, int], Object] = {}
+            for _ in range(self.objectCount):
                 x = random.randint(0, 15)
                 y = random.randint(0, 14)
-            self.objects[(x, y)] = Object(x, y, 0, False)
-        self.hiddenObjectCount = random.randint(MIN_HIDDEN_OBJECTS_PER_SCREEN, MAX_HIDDEN_OBJECTS_PER_SCREEN)
-        for _ in range(self.objectCount):
-            x = random.randint(0, 15)
-            y = random.randint(0, 14)
-            while (x, y) in self.objects:
+                while (x, y) in self.objects:
+                    x = random.randint(0, 15)
+                    y = random.randint(0, 14)
+                self.objects[(x, y)] = Object(x, y, 0, False)
+            self.hiddenObjectCount = random.randint(MIN_HIDDEN_OBJECTS_PER_SCREEN, MAX_HIDDEN_OBJECTS_PER_SCREEN)
+            for _ in range(self.objectCount):
                 x = random.randint(0, 15)
                 y = random.randint(0, 14)
-            self.objects[(x, y)] = Object(x, y, 0, True)
+                while (x, y) in self.objects:
+                    x = random.randint(0, 15)
+                    y = random.randint(0, 14)
+                self.objects[(x, y)] = Object(x, y, 0, True)
 
     def xray(self):
-        self.scanEnd = pyxel.frame_count + XRAY_DURATION
-        self.scan = True
+        if self.type not in ("START", "END"):
+            self.scanEnd = pyxel.frame_count + XRAY_DURATION
+            self.scan = True
 
     def collect(self, x, y) -> int:
-        if len(self.objects) == 0:
-            return 0
-        closestDist = float("inf")
-        closest: Tuple[int, int] = (-1, -1)
-        for coords in self.objects.keys():
-            dist = sqrt((coords[0]*8+OBJECT_POSITION_OFFSET - x)**2 + (coords[1]*8+OBJECT_POSITION_OFFSET - y)**2) # Take the distance between the player and the middle of the object tile
-            if dist < closestDist:
-                closest = coords
-                closestDist = dist
-        if (self.objects[closest].hidden and self.scan) or not self.objects[closest].hidden:
-            if closestDist <= COLLECTION_RADIUS:
-                points = self.objects[closest].collect()
-                del self.objects[closest]
-                return points
+        if self.type not in ("START", "END"):
+            if len(self.objects) == 0:
+                return 0
+            closestDist = float("inf")
+            closest: Tuple[int, int] = (-1, -1)
+            for coords in self.objects.keys():
+                dist = sqrt((coords[0]*8+OBJECT_POSITION_OFFSET - x)**2 + (coords[1]*8+OBJECT_POSITION_OFFSET - y)**2) # Take the distance between the player and the middle of the object tile
+                if dist < closestDist:
+                    closest = coords
+                    closestDist = dist
+            if (self.objects[closest].hidden and self.scan) or not self.objects[closest].hidden:
+                if closestDist <= COLLECTION_RADIUS:
+                    points = self.objects[closest].collect()
+                    del self.objects[closest]
+                    return points
         return 0
 
     def draw(self) -> None:
-        pyxel.rect(0, 0, 128, 120, 10)
-        for obj in self.objects.values():
-            if (obj.hidden and pyxel.frame_count <= self.scanEnd) or not obj.hidden:
-                obj.draw()
+        self.tilemap.draw(0, 0)
+        if self.type not in ("START", "END"):
+            for obj in self.objects.values():
+                if (obj.hidden and pyxel.frame_count <= self.scanEnd) or not obj.hidden:
+                    obj.draw()
 
 class App:
     def __init__(self):
