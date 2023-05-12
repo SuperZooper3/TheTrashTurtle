@@ -7,10 +7,10 @@ import random
 THE TRASH TURTLE
 """
 
-MIN_OBJECTS_PER_SCREEN = 1
-MAX_OBJECTS_PER_SCREEN = 1
-MIN_HIDDEN_OBJECTS_PER_SCREEN = 1
-MAX_HIDDEN_OBJECTS_PER_SCREEN = 1
+MIN_OBJECTS_PER_SCREEN = 10
+MAX_OBJECTS_PER_SCREEN = 14
+MIN_HIDDEN_OBJECTS_PER_SCREEN = 5
+MAX_HIDDEN_OBJECTS_PER_SCREEN = 7
 COLLECTION_RADIUS = 8
 PLAYER_SPEED = 2
 SMALL_TURTLE_SPEED = 1
@@ -19,11 +19,11 @@ PLAYER_POSITION_OFFSET = (4, 4)
 SMALL_TURTLE_POSITION_OFFSET = (4, 4)
 OBJECT_POSITION_OFFSET = (5, 5)
 OBJECT_POINTS = 1
-SMALL_TURTLE_STOP = 140
+SMALL_TURTLE_STOP = 160
 MAX_SMALL_TURTLES = 50
 
-ADDITIONAL_NORMAL_SCREENS = 2 # THIS DOES NOT INCLUDE FIRST AND FINAL SCREEN, OR THE FIRST 2 NORMAL SCREENS
-UP_SCREENS = 1 # NOT COUNTED IN NORMAL SCREENS
+ADDITIONAL_NORMAL_SCREENS = 1 # THIS DOES NOT INCLUDE FIRST AND FINAL SCREEN, OR THE FIRST 2 NORMAL SCREENS
+UP_SCREENS = 3 # NOT COUNTED IN NORMAL SCREENS
 
 FRAMES_PER_BIG_WALK = 10
 FRAMES_PER_SMALL_WALK = 10
@@ -343,6 +343,11 @@ class Cutscene:
     def update(self) -> None:
         for turtle in self.smallTurtles:
             turtle.update()
+        for turtle in self.smallTurtles:
+            if turtle.speed != 0:
+                break
+        else:
+            self.over = True
     
     def draw(self) -> None:
         for turtle in self.smallTurtles:
@@ -425,7 +430,7 @@ class App:
         if self.finished:
             pyxel.rect(10,10,110,100,0)
             # Write text depending 
-            finalText = ""
+            finalText = "final text here"
             if not self.player.hasXrayed:
                 finalText = XRAY_TEXT
             elif not self.player.hasUped:
