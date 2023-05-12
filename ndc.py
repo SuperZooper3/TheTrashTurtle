@@ -4,14 +4,14 @@ import pyxel
 import random
 
 """
-DOCUMENTATION GOES HERE
+THE TRASH TURTLE
 """
 
-MIN_OBJECTS_PER_SCREEN = 10
-MAX_OBJECTS_PER_SCREEN = 14
-MIN_HIDDEN_OBJECTS_PER_SCREEN = 10
-MAX_HIDDEN_OBJECTS_PER_SCREEN = 14
-COLLECTION_RADIUS = 5
+MIN_OBJECTS_PER_SCREEN = 1
+MAX_OBJECTS_PER_SCREEN = 1
+MIN_HIDDEN_OBJECTS_PER_SCREEN = 1
+MAX_HIDDEN_OBJECTS_PER_SCREEN = 1
+COLLECTION_RADIUS = 8
 PLAYER_SPEED = 2
 SMALL_TURTLE_SPEED = 1
 XRAY_DURATION = 60 # Frames
@@ -136,15 +136,17 @@ NORMAL_SPRITES = [SODA_CAN, STRAWS, CIG]
 HIDDEN_SPRITES = [X_SODA_CAN, X_STRAWS, X_CIG]
         
 class Player():
-    def __init__(self, screen):
+    def __init__(self, screen, totalTrash):
         self.x = 50
         self.y = 50
         self.current_screen = screen
         self.lastDirection = 0 # 0 is right 1 is left 2 is up 3 is down
         self.points = 0
+        self.totalTrash = totalTrash
 
         self.hasXrayed = False
         self.hasUped = False
+        self.noBag = False
 
     def update_current_screen(self,screen):
         self.current_screen = screen
@@ -205,6 +207,10 @@ class Player():
         if key_pressed(COLLECT_KEYS):
             self.points += self.current_screen.collect(self.x,self.y)
             self.current_screen.collect(self.x,self.y)
+
+            if self.current_screen.type == "END" and self.x > 60 and (self.y < 20 or self.y > 80): # Trigger the final cutscene
+                transitionStatus = "cutscene"
+                self.noBag = True
         
         if key_pressed(XRAY_KEYS):
             self.current_screen.xray()
@@ -214,8 +220,9 @@ class Player():
 
     def draw(self) -> None:
         BIG_TURTULES[self.lastDirection][int(pyxel.frame_count/FRAMES_PER_BIG_WALK)%len(BIG_TURTULES[self.lastDirection])].draw(self.x-PLAYER_POSITION_OFFSET[0],self.y-PLAYER_POSITION_OFFSET[1])
-        TRASH_BAGS[0].draw(self.x-PLAYER_POSITION_OFFSET[0],self.y-PLAYER_POSITION_OFFSET[1])
-
+        trashIndex = int((len(TRASH_BAGS)-1)*self.points/self.totalTrash)
+        if not self.noBag:
+            TRASH_BAGS[trashIndex].draw(self.x-4,self.y-8)
 
 class Object():
     def __init__(self, x, y, clover, hidden=False):
@@ -368,31 +375,33 @@ class App:
 
         self.current_screen_id = "0"
         self.current_screen = self.screens[self.current_screen_id]
-        self.player = Player(self.current_screen)
+        self.player = Player(self.current_screen,self.totalTrash)
 
         self.started = False
         self.finished = False
+        self.playerControl = False
 
         pyxel.run(self.update, self.draw)
 
     def update(self) -> None:
         if self.started:
-            transitionStatus = self.player.update()
-            if transitionStatus == "goRight":
-                self.current_screen_id = str(int(self.current_screen_id) + 1)
-                print(self.current_screen_id)
+            if self.playerControl: 
+                transitionStatus = self.player.update()
+                if transitionStatus == "goRight":
+                    self.current_screen_id = str(int(self.current_screen_id) + 1)
 
-            if transitionStatus == "goLeft":
-                self.current_screen_id = str(int(self.current_screen_id) - 1)
-                print(self.current_screen_id)
-            
-            if transitionStatus == "goUp":
-                self.current_screen_id = self.current_screen_id + "*"
-                print(self.current_screen_id)
+                if transitionStatus == "goLeft":
+                    self.current_screen_id = str(int(self.current_screen_id) - 1)
+                
+                if transitionStatus == "goUp":
+                    self.current_screen_id = self.current_screen_id + "*"
 
-            if transitionStatus == "goDown":
-                self.current_screen_id = self.current_screen_id[:-1]
-                print(self.current_screen_id)
+                if transitionStatus == "goDown":
+                    self.current_screen_id = self.current_screen_id[:-1]
+
+                if transitionStatus == "cutscene": # they've triggered the end of the game
+                    self.playerControl = False
+                    print("Game cutsente hit")
             
             self.current_screen = self.screens[self.current_screen_id]
             self.player.update_current_screen(self.current_screen)
@@ -401,6 +410,7 @@ class App:
         else:
             if key_pressed(COLLECT_KEYS):
                 self.started = True
+                self.playerControl = True
             
 
     def draw(self) -> None:
