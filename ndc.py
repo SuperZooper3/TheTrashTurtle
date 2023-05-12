@@ -7,6 +7,23 @@ DOCUMENTATION GOES HERE
 
 MIN_OBJECTS_PER_SCREEN = 100
 MAX_OBJECTS_PER_SCREEN = 140
+PLAYER_SPEED = 2
+
+UPKEYS = [pyxel.KEY_W,pyxel.KEY_UP]
+DOWNKEYS = [pyxel.KEY_S,pyxel.KEY_DOWN]
+LEFTKEYS = [pyxel.KEY_A,pyxel.KEY_LEFT]
+RIGHTKEYS = [pyxel.KEY_D,pyxel.KEY_RIGHT]
+COLLECTKEYS = [pyxel.KEY_SPACE]
+XRAYKEYS = [pyxel.KEY_J]
+
+
+COS45 = 0.707
+
+def key_pressed(keygroup):
+    for key in keygroup:
+        if pyxel.btn(key):
+            return True
+    return False
 
 class Sprite():
     def __init__(self) -> None:
@@ -17,13 +34,28 @@ class Sprite():
 
 class Player():
     def __init__(self):
-        pass
+        self.x = 50
+        self.y = 50
 
     def update(self) -> None:
-        pass
+        speed = PLAYER_SPEED
+        if (key_pressed(UPKEYS) or key_pressed(DOWNKEYS)) and (key_pressed(RIGHTKEYS) or key_pressed(LEFTKEYS)): # we are moving diag
+            speed *= COS45
+        
+        if key_pressed(UPKEYS):
+            self.y -= speed
+        
+        if key_pressed(DOWNKEYS):
+            self.y += speed
+
+        if key_pressed(LEFTKEYS):
+            self.x -= speed
+        
+        if key_pressed(RIGHTKEYS):
+            self.x += speed
 
     def draw(self) -> None:
-        pass 
+        pass
 
 class Object():
     def __init__(self, x, y):
