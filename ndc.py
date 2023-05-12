@@ -1,5 +1,5 @@
 from math import sqrt
-from typing import Dict
+from typing import Dict, Tuple
 import pyxel
 import random
 
@@ -14,6 +14,8 @@ MAX_HIDDEN_OBJECTS_PER_SCREEN = 14
 COLLECTION_RADIUS = 5
 PLAYER_SPEED = 2
 XRAY_DURATION = 60 # Frames
+PLAYER_POSITION_OFFSET = 4
+OBJECT_POSITION_OFFSET = 4
 
 SCREEN_COUNT = 1 # THIS DOSE NOT INCLUDE FIRST AND FINAL SCREEN
 
@@ -53,6 +55,7 @@ class Player():
         self.x = 50
         self.y = 50
         self.current_screen = screen
+        self.points = 0
 
     def update_current_screen(self,screen):
         self.current_screen = screen
@@ -91,14 +94,14 @@ class Player():
                 transitionStatus = "goDown"
         
         if self.x < 0: # FIXME: MAKE SURE TOP SCREENS CANT TRASNTION
-            if self.current_screen.type == "START":
+            if self.current_screen.type == "START" or self.current_screen.type == "UP":
                 self.x = 0
             else:
                 self.x = 128
                 transitionStatus = "goLeft"
         
         if self.x > 128:
-            if self.current_screen.type == "END":
+            if self.current_screen.type == "END" or self.current_screen.type == "UP":
                 self.x = 128
             else:
                 self.x = 0
@@ -106,12 +109,17 @@ class Player():
 
         # the interactions
         if key_pressed(COLLECT_KEYS):
+            self.points += self.current_screen.collect(self.x,self.y)
+            print(self.points)
             self.current_screen.collect(self.x,self.y)
+        
+        if key_pressed(XRAY_KEYS):
+            self.current_screen.xray()
 
         return transitionStatus
 
     def draw(self) -> None:
-        TURTLE_SMALL_1.draw(self.x,self.y)
+        TURTLE_SMALL_1.draw(self.x-PLAYER_POSITION_OFFSET,self.y-PLAYER_POSITION_OFFSET)
 
 class Object():
     def __init__(self, x, y, inputType, hidden=False):
@@ -135,7 +143,7 @@ class Screen():
         self.scan = False
         self.scanEnd = -1
         self.objectCount = random.randint(MIN_OBJECTS_PER_SCREEN, MAX_OBJECTS_PER_SCREEN)
-        self.objects: Dict[Object] = {}
+        self.objects: Dict[Tuple[int, int], Object] = {}
         for _ in range(self.objectCount):
             x = random.randint(0, 15)
             y = random.randint(0, 14)
@@ -160,14 +168,18 @@ class Screen():
         if len(self.objects) == 0:
             return 0
         closestDist = float("inf")
-        closest = ()
+        closest: Tuple[int, int] = (-1, -1)
         for coords in self.objects.keys():
-            dist = sqrt((coords[0]*8+4 - x)**2 + (coords[1]*8+4 - y)**2) # Take the distance between the player and the middle of the object tile
+            dist = sqrt((coords[0]*8+OBJECT_POSITION_OFFSET - x)**2 + (coords[1]*8+OBJECT_POSITION_OFFSET - y)**2) # Take the distance between the player and the middle of the object tile
             if dist < closestDist:
                 closest = coords
                 closestDist = dist
         if (self.objects[closest].hidden and self.scan) or not self.objects[closest].hidden:
-            return self.objects[closest].collect() if closestDist <= COLLECTION_RADIUS else 0
+            if closestDist <= COLLECTION_RADIUS:
+                points = self.objects[closest].collect()
+                del self.objects[closest]
+                return points
+        return 0
 
     def draw(self) -> None:
         pyxel.rect(0, 0, 128, 120, 10)
@@ -183,7 +195,9 @@ class App:
         self.screens = {}
 
         for i in range(1,SCREEN_COUNT+1):
-            self.screens[str(i)] = Screen(str(i),"NORMAL")
+            self.screens[str(i)] = Screen(str(i),"DOWN")
+        
+        self.screens["1*"] = Screen("1*","UP")
 
         # Add the first and last sreens that will be special, but thats later
         self.screens["0"] = Screen("0","START")
@@ -202,8 +216,17 @@ class App:
         if transitionStatus == "goRight":
             self.current_screen_id = str(int(self.current_screen_id) + 1)
             print(self.current_screen_id)
+
         if transitionStatus == "goLeft":
             self.current_screen_id = str(int(self.current_screen_id) - 1)
+            print(self.current_screen_id)
+        
+        if transitionStatus == "goUp":
+            self.current_screen_id = self.current_screen_id + "*"
+            print(self.current_screen_id)
+
+        if transitionStatus == "goDown":
+            self.current_screen_id = self.current_screen_id[:-1]
             print(self.current_screen_id)
         
         self.current_screen = self.screens[self.current_screen_id]
