@@ -10,6 +10,7 @@ les touches WASD ou les flèches pour vous déplacer et ESPACE pour ramasser les
 vous si vous jouez plusieurs fois. Explorez la plage en allant vers la droite, ramassez un maximum de déchets pour remplir 
 votre sac-poubelle et sauvez tous les bébés tortues ! La taille de votre sac-poubelle dépend du nombre de déchets que vous 
 avez ramassés, alors en ramassant plus de déchets, vous sauvez plus de tortues. Le joueur avec le plus grand sac-poubelle gagne. 
+Une fois rendue à l'océan, appuyez sur la touche ESPACE sur la poubelle pour jeter votre sac-poubelle et terminer le jeu.
 Bonne chance !
 """
 
