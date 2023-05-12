@@ -398,7 +398,7 @@ class App:
     def update(self) -> None:
         if self.started and not self.cutscenePlaying:
             if self.playerControl: 
-                transitionStatus,points = self.player.update()
+                transitionStatus, self.points = self.player.update()
                 if transitionStatus == "goRight":
                     self.current_screen_id = str(int(self.current_screen_id) + 1)
 
@@ -414,7 +414,7 @@ class App:
                 if transitionStatus == "cutscene": # they've triggered the end of the game
                     self.playerControl = False
                     self.cutscenePlaying = True
-                    self.cutscene = Cutscene(int(MAX_SMALL_TURTLES*points/self.totalTrash))
+                    self.cutscene = Cutscene(int(MAX_SMALL_TURTLES*self.points/self.totalTrash))
             
             self.current_screen = self.screens[self.current_screen_id]
             self.player.update_current_screen(self.current_screen)
@@ -451,7 +451,7 @@ class App:
                 finalText = GO_UP_TEXT
             else:
                 finalText = ALL_W_TEXT
-            pyxel.text(12,12,FINAL_TEXT,7)
+            pyxel.text(12,12,FINAL_TEXT.replace("THIS MUCH", str(self.points)),7)
             pyxel.text(12,70,finalText,7)
             
 
