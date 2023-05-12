@@ -47,6 +47,22 @@ class Sprite():
     def draw(self, x, y) -> None:
         pyxel.blt(x, y, self.img, self.u, self.v, self.w, self.h, self.colkey)
 
+class Tilemap():
+    def __init__(self, tm, u, v, w=128, h=128) -> None:
+        self.tm = tm
+        self.u = u
+        self.v = v
+        self.w = w
+        self.h = h
+
+    def draw(self, x, y) -> None:
+        pyxel.bltm(x, y, self.tm, self.u, self.v, self.w, self.h)
+
+NORMAL_TILEMAP_1 = Tilemap(0,0,0)
+START_TILEMAP = Tilemap(0,0,16)
+END_TILEMAP = Tilemap(0,16,0)
+
+
 TURTLE_SMALL_1 = Sprite(0,0,9,9,0)
 CRAB = Sprite(0, 28, 8, 7)
         
