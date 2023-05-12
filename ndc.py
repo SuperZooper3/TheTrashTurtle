@@ -88,6 +88,11 @@ class Tilemap():
         pyxel.bltm(x, y, self.tm, self.u, self.v, self.w, self.h)
 
 NORMAL_TILEMAP_1 = Tilemap(0,0,0)
+NORMAL_TILEMAP_2 = Tilemap(0,128,128)
+NORMAL_TILEMAP_3 = Tilemap(0,256,0)
+NORMAL_TILEMAP_4 = Tilemap(0,384,0)
+NORMAL_TILEMAP_SECRET = Tilemap(0,256,128)
+
 START_TILEMAP = Tilemap(0,0,128)
 END_TILEMAP = Tilemap(0,128,0)
 
