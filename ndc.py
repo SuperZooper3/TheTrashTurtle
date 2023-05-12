@@ -53,6 +53,10 @@ SCREEN_TEXTS = {
     "5":"preserver ces animaux.",
     "6":"Travaillons ensemble pour",
     "7":"l'ODD 14 de l'ONU.",
+    "3*":"Ha ha! Un secret!",
+    "4*":"Quel beau gazon!",
+    "5*":"Ramassez vos ordures",
+    "6*":"J'aime les tortues <3"
     }
 
 def insertReturns(text):
