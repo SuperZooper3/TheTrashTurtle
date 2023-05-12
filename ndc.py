@@ -53,6 +53,7 @@ class Player():
         self.x = 50
         self.y = 50
         self.current_screen = screen
+        self.points = 0
 
     def update_current_screen(self,screen):
         self.current_screen = screen
@@ -91,14 +92,14 @@ class Player():
                 transitionStatus = "goDown"
         
         if self.x < 0: # FIXME: MAKE SURE TOP SCREENS CANT TRASNTION
-            if self.current_screen.type == "START":
+            if self.current_screen.type == "START" or self.current_screen.type == "UP":
                 self.x = 0
             else:
                 self.x = 128
                 transitionStatus = "goLeft"
         
         if self.x > 128:
-            if self.current_screen.type == "END":
+            if self.current_screen.type == "END" or self.current_screen.type == "UP":
                 self.x = 128
             else:
                 self.x = 0
@@ -106,7 +107,8 @@ class Player():
 
         # the interactions
         if key_pressed(COLLECT_KEYS):
-            self.current_screen.collect(self.x,self.y)
+            self.points += self.current_screen.collect(self.x,self.y)
+            print(self.points)
 
         return transitionStatus
 
@@ -188,7 +190,9 @@ class App:
         self.screens = {}
 
         for i in range(1,SCREEN_COUNT+1):
-            self.screens[str(i)] = Screen(str(i),"NORMAL")
+            self.screens[str(i)] = Screen(str(i),"DOWN")
+        
+        self.screens["1*"] = Screen("1*","UP")
 
         # Add the first and last sreens that will be special, but thats later
         self.screens["0"] = Screen("0","START")
@@ -207,8 +211,17 @@ class App:
         if transitionStatus == "goRight":
             self.current_screen_id = str(int(self.current_screen_id) + 1)
             print(self.current_screen_id)
+
         if transitionStatus == "goLeft":
             self.current_screen_id = str(int(self.current_screen_id) - 1)
+            print(self.current_screen_id)
+        
+        if transitionStatus == "goUp":
+            self.current_screen_id = self.current_screen_id + "*"
+            print(self.current_screen_id)
+
+        if transitionStatus == "goDown":
+            self.current_screen_id = self.current_screen_id[:-1]
             print(self.current_screen_id)
         
         self.current_screen = self.screens[self.current_screen_id]
