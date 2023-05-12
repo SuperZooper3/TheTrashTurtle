@@ -44,13 +44,17 @@ XRAY_KEYS = [pyxel.KEY_J]
 COS_45 = 0.707
 
 SCREEN_TEXTS = {
-    "0":"A",
-    "1":"B",
-    "2":"C",
-    "3":"D",
+    "0":"Les tortues sont des animaux majestueux qui vivent dans les oceans du monde entier.",
+    "1":"Malheureusement, ces creatures magnifiques sont menacees par les dechets et la pollution qui se trouvent sur les plages.",
+    "2":"Les dechets tels que les sacs en plastique peuvent etre confondus avec de la nourriture par les tortues, ce qui peut entrainer leur mort.",
+    "3":"Les dechets peuvent egalement bloquer leur chemin vers l'eau, ce qui les empeche de se nourrir et de se reproduire.",
+    "4":"Les tortues ont besoin de plages propres et non polluees pour pondre leurs oeufs et les faire eclore en toute securite."
+    "5":"En nettoyant les plages et en recyclant les dechets, nous pouvons aider a proteger les tortues et leur environnement."
+    "6":"L'objectif de developpement durable 14 vise a proteger et a restaurer les ecosystemes marins et cotiers, ainsi qu'a utiliser les ressources marines de maniere durable pour assurer la durabilite de notre planete."
+    "7":"En travaillant ensemble pour proteger les tortues et leur habitat, nous pouvons contribuer a preserver ces animaux incroyables pour les generations futures."
     }
 
-INTRO_TEXT = "Bienvenue à la plage ! Les bébés tortues ne vont pas tarder à éclore de leurs œufs. Vous êtes la maman tortue, 'The Trash Turtle', chargée de nettoyer la plage et de dégager le chemin pour que vos bébés puissent atteindre l'océan en toute sécurité. Vous pouvez vous déplacer à l'aide des touches WASD ou les flèches. Pour ramasser les déchets sur la plage, appuyez sur la touche ESPACE. Plusieurs mécanismes se révéleront à vous si vous tentez de jouer plusieurs fois. Déplacez vous vers la droite pour explorer la plage. Ramassez le plus de déchets possible et voyez votre sac-poubelle augmenter pour sauver tous les bébés tortues ! Bonne chance !"
+INTRO_TEXT = "Bienvenue a la plage ! Vos bebes tortues vont naitre bientot. Vous etes la maman, 'The Trash Turtle', chargee de nettoyer la plage et de degager le chemin pour que vos bebes puissent atteindre l'ocean en toute securite. Deplacez-vous a l'aide des touches WASD ou des fleches. Pour ramasser les dechets, appuyez sur la touche ESPACE. D'autres mecanismes se reveleront a vous si vous jouez plusieurs fois. Bonne chance !"
 XRAY_TEXT = "Essayez de jouer à nouveau et appuyez sur la touche J pour utiliser vos pouvoirs X-RAY et révéler plus de déchets."
 GO_UP_TEXT = "Essayez de jouer à nouveau et quand vous voyez un trèfle à quatre feuilles déplacez-vous vers le haut pour découvrir un espace secret de la plage."
 ALL_W_TEXT = "Vous avez découvert tous les secrets de la plage et vous avez réussi à trouver tous les déchets ! Bien joué !"
