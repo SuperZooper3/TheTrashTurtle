@@ -38,8 +38,11 @@ SCREEN_TEXTS = {
     "3":"D",
     }
 
+INTRO_TEXT = "Welcome text goes here"
 XRAY_TEXT = "xray text goes here"
 GO_UP_TEXT = "go up text goes here"
+ALL_W_TEXT = "YOU WON MOTHERFUCKER"
+FINAL_TEXT = "YOU SAVED THE TURTULES"
 
 # make sure to buffer the screen texts so that 
 
@@ -118,6 +121,9 @@ class Player():
         self.lastDirection = 0 # 0 is right 1 is left 2 is up 3 is down
         self.points = 0
 
+        self.hasXrayed = False
+        self.hasUped = False
+
     def update_current_screen(self,screen):
         self.current_screen = screen
         
@@ -150,6 +156,7 @@ class Player():
             else: # we're going to transition next frame
                 self.y = 120 # start at the bottom of the screen
                 transitionStatus = "goUp"
+                self.hasUped = True
         
         if self.y > 120: # we went past the bottom
             if not self.current_screen.type == "UP":
@@ -179,6 +186,7 @@ class Player():
         
         if key_pressed(XRAY_KEYS):
             self.current_screen.xray()
+            self.hasXrayed = True
 
         return transitionStatus
 
@@ -262,7 +270,7 @@ class Screen():
                 if (obj.hidden and pyxel.frame_count <= self.scanEnd) or not obj.hidden:
                     obj.draw()
 
-        pyxel.text(0,120,SCREEN_TEXTS.get(self.id,""),0)
+        pyxel.text(1,121,SCREEN_TEXTS.get(self.id,""),0)
 
 class App:
     def __init__(self):
@@ -288,36 +296,60 @@ class App:
         self.current_screen = self.screens[self.current_screen_id]
         self.player = Player(self.current_screen)
 
-        print(self.screens)
+        self.started = False
+        self.finished = False
 
         pyxel.run(self.update, self.draw)
 
     def update(self) -> None:
-        transitionStatus = self.player.update()
-        if transitionStatus == "goRight":
-            self.current_screen_id = str(int(self.current_screen_id) + 1)
-            print(self.current_screen_id)
+        if self.started:
+            transitionStatus = self.player.update()
+            if transitionStatus == "goRight":
+                self.current_screen_id = str(int(self.current_screen_id) + 1)
+                print(self.current_screen_id)
 
-        if transitionStatus == "goLeft":
-            self.current_screen_id = str(int(self.current_screen_id) - 1)
-            print(self.current_screen_id)
-        
-        if transitionStatus == "goUp":
-            self.current_screen_id = self.current_screen_id + "*"
-            print(self.current_screen_id)
+            if transitionStatus == "goLeft":
+                self.current_screen_id = str(int(self.current_screen_id) - 1)
+                print(self.current_screen_id)
+            
+            if transitionStatus == "goUp":
+                self.current_screen_id = self.current_screen_id + "*"
+                print(self.current_screen_id)
 
-        if transitionStatus == "goDown":
-            self.current_screen_id = self.current_screen_id[:-1]
-            print(self.current_screen_id)
-        
-        self.current_screen = self.screens[self.current_screen_id]
-        self.player.update_current_screen(self.current_screen)
-
-
+            if transitionStatus == "goDown":
+                self.current_screen_id = self.current_screen_id[:-1]
+                print(self.current_screen_id)
+            
+            self.current_screen = self.screens[self.current_screen_id]
+            self.player.update_current_screen(self.current_screen)
+            if key_pressed([pyxel.KEY_P]):
+                self.finished = True
+        else:
+            if key_pressed(COLLECT_KEYS):
+                self.started = True
+            
 
     def draw(self) -> None:
         pyxel.cls(0)
         self.current_screen.draw()
         self.player.draw()
+
+        if not self.started:
+            pyxel.rect(10,10,110,100,0)
+            pyxel.text(12,12,INTRO_TEXT,7)
+
+        if self.finished:
+            pyxel.rect(10,10,110,100,0)
+            # Write text depending 
+            finalText = ""
+            if not self.player.hasXrayed:
+                finalText = XRAY_TEXT
+            elif not self.player.hasUped:
+                finalText = GO_UP_TEXT
+            else:
+                finalText = ALL_W_TEXT
+            pyxel.text(12,12,FINAL_TEXT,7)
+            pyxel.text(12,70,finalText,7)
+            
 
 game = App()
