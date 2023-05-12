@@ -7,11 +7,11 @@ import random
 THE TRASH TURTLE
 """
 
-MIN_OBJECTS_PER_SCREEN = 10
-MAX_OBJECTS_PER_SCREEN = 14
+MIN_OBJECTS_PER_SCREEN = 7
+MAX_OBJECTS_PER_SCREEN = 9
 MIN_HIDDEN_OBJECTS_PER_SCREEN = 5
 MAX_HIDDEN_OBJECTS_PER_SCREEN = 7
-COLLECTION_RADIUS = 8
+COLLECTION_RADIUS = 10
 PLAYER_SPEED = 2
 SMALL_TURTLE_SPEED = 1
 XRAY_DURATION = 60 # Frames
@@ -272,7 +272,7 @@ class Screen():
                     y = random.randint(0, 10)
                 self.objects[(x, y)] = Object(x, y, False, False)
             self.hiddenObjectCount = random.randint(MIN_HIDDEN_OBJECTS_PER_SCREEN, MAX_HIDDEN_OBJECTS_PER_SCREEN)
-            for _ in range(self.objectCount):
+            for _ in range(self.hiddenObjectCount):
                 if len(self.objects) >= 132:
                     break
                 x = random.randint(0, 11)
@@ -338,7 +338,7 @@ class Cutscene:
         self.over = False
         self.smallTurtles: List[SmallTurtle] = []
         for _ in range(numTurtles):
-            self.smallTurtles.append(SmallTurtle(random.randint(-205, -5), random.randint(10, 110)))
+            self.smallTurtles.append(SmallTurtle(random.randint(-305, -5), random.randint(25, 95)))
     
     def update(self) -> None:
         for turtle in self.smallTurtles:
