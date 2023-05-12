@@ -4,6 +4,36 @@ import pyxel
 DOCUMENTATION GOES HERE
 """
 
+class Player():
+    def __init__(self):
+        pass
+
+    def update(self) -> None:
+        pass
+
+    def draw(self) -> None:
+        pass 
+
+class Object():
+    def __init__(self):
+        pass
+
+    def update(self) -> None:
+        pass
+
+    def draw(self) -> None:
+        pass 
+    
+class Screen():
+    def __init__(self):
+        pass
+
+    def update(self) -> None:
+        pass
+
+    def draw(self) -> None:
+        pass 
+
 class App:
     def __init__(self):
         pyxel.init(128, 128, title="NDC 2023")
