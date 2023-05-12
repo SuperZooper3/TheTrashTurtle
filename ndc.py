@@ -4,6 +4,13 @@ import pyxel
 DOCUMENTATION GOES HERE
 """
 
+class Sprite():
+    def __init__(self) -> None:
+        pass
+
+    def draw(self):
+        pass
+
 class Player():
     def __init__(self):
         pass
