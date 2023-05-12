@@ -12,46 +12,46 @@ jouer plusieurs fois. Déplacez vous vers la droite pour explorer la plage. Rama
 voyez votre sac-poubelle augmenter pour sauver tous les bébés tortues ! Bonne chance !
 """
 
-MIN_OBJECTS_PER_SCREEN = 7
-MAX_OBJECTS_PER_SCREEN = 9
-MIN_HIDDEN_OBJECTS_PER_SCREEN = 5
-MAX_HIDDEN_OBJECTS_PER_SCREEN = 7
-COLLECTION_RADIUS = 10
-PLAYER_SPEED = 2
-SMALL_TURTLE_SPEED = 1
-XRAY_DURATION = 60 # Frames
-PLAYER_POSITION_OFFSET = (4, 4)
-SMALL_TURTLE_POSITION_OFFSET = (4, 4)
-OBJECT_POSITION_OFFSET = (5, 5)
-OBJECT_POINTS = 1
-SMALL_TURTLE_STOP = 160
-MAX_SMALL_TURTLES = 50
+MIN_OBJECTS_PER_SCREEN: int = 7
+MAX_OBJECTS_PER_SCREEN: int = 9
+MIN_HIDDEN_OBJECTS_PER_SCREEN: int = 5
+MAX_HIDDEN_OBJECTS_PER_SCREEN: int = 7
+COLLECTION_RADIUS: int = 10
+PLAYER_SPEED: int = 2
+SMALL_TURTLE_SPEED: int = 1
+XRAY_DURATION: int = 60 # Frames
+PLAYER_POSITION_OFFSET: Tuple[int, int] = (4, 4)
+SMALL_TURTLE_POSITION_OFFSET: Tuple[int, int] = (4, 4)
+OBJECT_POSITION_OFFSET: Tuple[int, int] = (5, 5)
+OBJECT_POINTS: int = 1
+SMALL_TURTLE_STOP: int = 160
+MAX_SMALL_TURTLES: int = 50
 
-ADDITIONAL_NORMAL_SCREENS = 1 # THIS DOES NOT INCLUDE FIRST AND FINAL SCREEN, OR THE FIRST 2 NORMAL SCREENS
-UP_SCREENS = 3 # NOT COUNTED IN NORMAL SCREENS
+ADDITIONAL_NORMAL_SCREENS: int = 1 # THIS DOES NOT INCLUDE FIRST AND FINAL SCREEN, OR THE FIRST 2 NORMAL SCREENS
+UP_SCREENS: int = 3 # NOT COUNTED IN NORMAL SCREENS
 
-FRAMES_PER_BIG_WALK = 10
-FRAMES_PER_SMALL_WALK = 10
+FRAMES_PER_BIG_WALK: int = 10
+FRAMES_PER_SMALL_WALK: int = 10
 
-UP_KEYS = [pyxel.KEY_W,pyxel.KEY_UP]
-DOWN_KEYS = [pyxel.KEY_S,pyxel.KEY_DOWN]
-LEFT_KEYS = [pyxel.KEY_A,pyxel.KEY_LEFT]
-RIGHT_KEYS = [pyxel.KEY_D,pyxel.KEY_RIGHT]
-COLLECT_KEYS = [pyxel.KEY_SPACE]
-XRAY_KEYS = [pyxel.KEY_J]
+UP_KEYS: List[int] = [pyxel.KEY_W,pyxel.KEY_UP]
+DOWN_KEYS: List[int] = [pyxel.KEY_S,pyxel.KEY_DOWN]
+LEFT_KEYS: List[int] = [pyxel.KEY_A,pyxel.KEY_LEFT]
+RIGHT_KEYS: List[int] = [pyxel.KEY_D,pyxel.KEY_RIGHT]
+COLLECT_KEYS: List[int] = [pyxel.KEY_SPACE]
+XRAY_KEYS: List[int] = [pyxel.KEY_J]
 
 
-COS_45 = 0.707
+COS_45: float = 0.707
 
 SCREEN_TEXTS = {
-    "0":"Les tortues sont des animaux majestueux qui vivent dans les oceans du monde entier.",
-    "1":"Malheureusement, ces creatures magnifiques sont menacees par les dechets et la pollution qui se trouvent sur les plages.",
-    "2":"Les dechets tels que les sacs en plastique peuvent etre confondus avec de la nourriture par les tortues, ce qui peut entrainer leur mort.",
-    "3":"Les dechets peuvent egalement bloquer leur chemin vers l'eau, ce qui les empeche de se nourrir et de se reproduire.",
-    "4":"Les tortues ont besoin de plages propres et non polluees pour pondre leurs oeufs et les faire eclore en toute securite.",
-    "5":"En nettoyant les plages et en recyclant les dechets, nous pouvons aider a proteger les tortues et leur environnement.",
-    "6":"L'objectif de developpement durable 14 vise a proteger et a restaurer les ecosystemes marins et cotiers, ainsi qu'a utiliser les ressources marines de maniere durable pour assurer la durabilite de notre planete.",
-    "7":"En travaillant ensemble pour proteger les tortues et leur habitat, nous pouvons contribuer a preserver ces animaux incroyables pour les generations futures.",
+    "0":"Les tortues sont des animaux",
+    "1":"majestueux qui vivent dans les",
+    "2":"oceans du monde entier.",
+    "3":"En travaillant ensemble pour",
+    "4":"proteger les tortues et leur",
+    "5":"habitat, nous pouvons contribuer",
+    "6":"a preserver ces animaux",
+    "7":"pour les generations futures.",
     }
 
 def insertReturns(text):
@@ -73,51 +73,51 @@ FINAL_TEXT = insertReturns("Felicitations, vous avez ramasse THIS MUCH dechets! 
 
 # make sure to buffer the screen texts so that 
 
-def key_pressed(keygroup):
+def key_pressed(keygroup: List[int]) -> bool:
     for key in keygroup:
         if pyxel.btn(key):
             return True
     return False
 
 class Sprite():
-    def __init__(self, u, v, w, h, colkey=None) -> None:
-        self.img = 0
-        self.u = u
-        self.v = v
-        self.w = w
-        self.h = h
-        self.colkey = colkey
+    def __init__(self, u: int, v: int, w: int, h: int, colkey: int | None=None) -> None:
+        self.img: int = 0
+        self.u: int = u
+        self.v: int = v
+        self.w: int = w
+        self.h: int = h
+        self.colkey: int | None = colkey
 
-    def draw(self, x, y) -> None:
+    def draw(self, x: int, y: int) -> None:
         pyxel.blt(x, y, self.img, self.u, self.v, self.w, self.h, self.colkey)
 
 class Tilemap():
-    def __init__(self, tm, u, v, w=128, h=128) -> None:
-        self.tm = tm
-        self.u = u
-        self.v = v
-        self.w = w
-        self.h = h
+    def __init__(self, tm: int, u: int, v: int, w: int=128, h: int=128) -> None:
+        self.tm: int = tm
+        self.u: int = u
+        self.v: int = v
+        self.w: int = w
+        self.h: int = h
 
     def draw(self, x, y) -> None:
         pyxel.bltm(x, y, self.tm, self.u, self.v, self.w, self.h)
 
-NORMAL_TILEMAP_1 = Tilemap(0,0,0)
-NORMAL_TILEMAP_2 = Tilemap(0,128,128)
-NORMAL_TILEMAP_3 = Tilemap(0,256,0)
-NORMAL_TILEMAP_4 = Tilemap(0,384,0)
-SECRET_TILEMAP = Tilemap(0,256,128)
+NORMAL_TILEMAP_1: Tilemap = Tilemap(0,0,0)
+NORMAL_TILEMAP_2: Tilemap = Tilemap(0,128,128)
+NORMAL_TILEMAP_3: Tilemap = Tilemap(0,256,0)
+NORMAL_TILEMAP_4: Tilemap = Tilemap(0,384,0)
+SECRET_TILEMAP: Tilemap = Tilemap(0,256,128)
 
-START_TILEMAP = Tilemap(0,0,128)
-END_TILEMAP = Tilemap(0,128,0)
+START_TILEMAP: Tilemap = Tilemap(0,0,128)
+END_TILEMAP: Tilemap = Tilemap(0,128,0)
 
-NORMAL_TILEMAPS = [NORMAL_TILEMAP_1, NORMAL_TILEMAP_2, NORMAL_TILEMAP_3, NORMAL_TILEMAP_4]
+NORMAL_TILEMAPS: List[Tilemap] = [NORMAL_TILEMAP_1, NORMAL_TILEMAP_2, NORMAL_TILEMAP_3, NORMAL_TILEMAP_4]
 
-TURTLE_SMALL_1 = Sprite(0,0,9,9,0)
-TURTLE_SMALL_2 = Sprite(0,10,7,9,0)
-TURTLE_SMALL_3 = Sprite(0,18,9,9,0)
+TURTLE_SMALL_1: Sprite = Sprite(0,0,9,9,0)
+TURTLE_SMALL_2: Sprite = Sprite(0,10,7,9,0)
+TURTLE_SMALL_3: Sprite = Sprite(0,18,9,9,0)
 
-SMALL_TURTULES = [TURTLE_SMALL_1,TURTLE_SMALL_2,TURTLE_SMALL_3]
+SMALL_TURTULES: List[Sprite] = [TURTLE_SMALL_1,TURTLE_SMALL_2,TURTLE_SMALL_3]
 
 BIG_TURTULE_1_RIGHT = Sprite(48,0,16,16,0)
 BIG_TURTULE_2_RIGHT = Sprite(48,16,16,16,0)
