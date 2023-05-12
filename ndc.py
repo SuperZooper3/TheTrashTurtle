@@ -31,6 +31,18 @@ XRAY_KEYS = [pyxel.KEY_J]
 
 COS_45 = 0.707
 
+SCREEN_TEXTS = {
+    "0":"A",
+    "1":"B",
+    "2":"C",
+    "3":"D",
+    }
+
+XRAY_TEXT = "xray text goes here"
+GO_UP_TEXT = "go up text goes here"
+
+# make sure to buffer the screen texts so that 
+
 def key_pressed(keygroup):
     for key in keygroup:
         if pyxel.btn(key):
@@ -75,7 +87,7 @@ SMALL_TURTULES = [TURTLE_SMALL_1,TURTLE_SMALL_2,TURTLE_SMALL_3]
 BIG_TURTULE_1 = Sprite(10,0,14,9,0)
 BIG_TURTULE_2 = Sprite(10,12,14,9,0)
 
-BIG_TURTULES = [BIG_TURTULE_1,BIG_TURTULE_2]
+BIG_TURTULES = [[BIG_TURTULE_1,BIG_TURTULE_2],[BIG_TURTULE_1,BIG_TURTULE_2],[BIG_TURTULE_1,BIG_TURTULE_2],[BIG_TURTULE_1,BIG_TURTULE_2]]
 
 FRAMES_PER_BIG_WALK = 10
 
@@ -90,6 +102,7 @@ class Player():
         self.x = 50
         self.y = 50
         self.current_screen = screen
+        self.lastDirection = 0 # 0 is right 1 is left 2 is up 3 is down
         self.points = 0
 
     def update_current_screen(self,screen):
@@ -102,15 +115,19 @@ class Player():
         
         if key_pressed(UP_KEYS):
             self.y -= speed
+            self.lastDirection = 2
         
         if key_pressed(DOWN_KEYS):
             self.y += speed
+            self.lastDirection = 3
 
         if key_pressed(LEFT_KEYS):
             self.x -= speed
+            self.lastDirection = 1
         
         if key_pressed(RIGHT_KEYS):
             self.x += speed
+            self.lastDirection = 0
 
         transitionStatus = "None"
 
@@ -145,7 +162,6 @@ class Player():
         # the interactions
         if key_pressed(COLLECT_KEYS):
             self.points += self.current_screen.collect(self.x,self.y)
-            print(self.points)
             self.current_screen.collect(self.x,self.y)
         
         if key_pressed(XRAY_KEYS):
@@ -154,7 +170,7 @@ class Player():
         return transitionStatus
 
     def draw(self) -> None:
-        BIG_TURTULES[int(pyxel.frame_count/FRAMES_PER_BIG_WALK)%len(BIG_TURTULES)].draw(self.x-PLAYER_POSITION_OFFSET,self.y-PLAYER_POSITION_OFFSET)
+        BIG_TURTULES[self.lastDirection][int(pyxel.frame_count/FRAMES_PER_BIG_WALK)%len(BIG_TURTULES[self.lastDirection])].draw(self.x-PLAYER_POSITION_OFFSET,self.y-PLAYER_POSITION_OFFSET)
         TRASH_BAGS[0].draw(self.x-PLAYER_POSITION_OFFSET,self.y-PLAYER_POSITION_OFFSET)
 
 
@@ -232,6 +248,8 @@ class Screen():
             for obj in self.objects.values():
                 if (obj.hidden and pyxel.frame_count <= self.scanEnd) or not obj.hidden:
                     obj.draw()
+
+        pyxel.text(0,120,SCREEN_TEXTS.get(self.id,""),0)
 
 class App:
     def __init__(self):
