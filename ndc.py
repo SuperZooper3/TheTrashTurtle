@@ -18,6 +18,7 @@ XRAY_DURATION = 60 # Frames
 PLAYER_POSITION_OFFSET = (4, 4)
 OBJECT_POSITION_OFFSET = (5, 5)
 OBJECT_POINTS = 1
+SMALL_TURTLE_STOP = 110
 
 ADDITIONAL_NORMAL_SCREENS = 2 # THIS DOES NOT INCLUDE FIRST AND FINAL SCREEN, OR THE FIRST 2 NORMAL SCREENS
 UP_SCREENS = 1 # NOT COUNTED IN NORMAL SCREENS
@@ -211,12 +212,14 @@ class Player():
 
 
 class Object():
-    def __init__(self, x, y, inputType, hidden=False):
+    def __init__(self, x, y, clover, hidden=False):
         self.x = x
         self.y = y
         self.hidden = hidden
-        self.type = inputType
-        if not hidden:
+        self.clover = clover
+        if clover:
+            self.sprite = CLOVER
+        elif not hidden:
             self.sprite = random.choice(NORMAL_SPRITES)
         else:
             self.sprite = random.choice(HIDDEN_SPRITES)
@@ -242,6 +245,10 @@ class Screen():
         if self.type not in ("START", "END"):
             self.objectCount = random.randint(MIN_OBJECTS_PER_SCREEN, MAX_OBJECTS_PER_SCREEN)
             self.objects: Dict[Tuple[int, int], Object] = {}
+            if self.type == "DOWN":
+                x = random.randint(0, 11)
+                y = random.randint(0, 10)
+                self.objects[(x, y)] = Object(x, y, True, False)
             for _ in range(self.objectCount):
                 if len(self.objects) >= 132:
                     break
@@ -250,7 +257,7 @@ class Screen():
                 while (x, y) in self.objects:
                     x = random.randint(0, 11)
                     y = random.randint(0, 10)
-                self.objects[(x, y)] = Object(x, y, 0, False)
+                self.objects[(x, y)] = Object(x, y, False, False)
             self.hiddenObjectCount = random.randint(MIN_HIDDEN_OBJECTS_PER_SCREEN, MAX_HIDDEN_OBJECTS_PER_SCREEN)
             for _ in range(self.objectCount):
                 if len(self.objects) >= 132:
@@ -261,6 +268,9 @@ class Screen():
                     x = random.randint(0, 11)
                     y = random.randint(0, 10)
                 self.objects[(x, y)] = Object(x, y, 0, True)
+            self.trashCount = len(self.objects)
+        else:
+            self.trashCount = 0
 
     def xray(self):
         if self.type not in ("START", "END"):
@@ -299,9 +309,15 @@ class SmallTurtle:
     def __init__(self, x, y) -> None:
         self.x = x
         self.y = y
+        self.speed = SMALL_TURTLE_SPEED
     
     def update(self):
-        self.x += SMALL_TURTLE_SPEED
+        self.x += self.speed
+        if self.x >= SMALL_TURTLE_STOP:
+            self.speed = 0
+    
+    def draw(self) -> None:
+        pass
 
 
 class Cutscene:
@@ -313,7 +329,7 @@ class App:
         pyxel.init(128, 128, title="NDC 2023")
         pyxel.load("ndc.pyxres")
 
-        self.screens = {}
+        self.screens: Dict[str, Screen] = {}
         for i in range(1, 3):
             self.screens[str(i)] = Screen(str(i), "NORMAL")
         if ADDITIONAL_NORMAL_SCREENS + UP_SCREENS > 0:
@@ -327,6 +343,10 @@ class App:
         # Add the first and last screens that will be special, but thats later
         self.screens["0"] = Screen("0","START")
         self.screens[str(UP_SCREENS+ADDITIONAL_NORMAL_SCREENS+3)] = Screen(str(UP_SCREENS+ADDITIONAL_NORMAL_SCREENS+3),"END")
+
+        self.totalTrash = 0
+        for screen in self.screens.values():
+            self.totalTrash += screen.trashCount
 
         self.current_screen_id = "0"
         self.current_screen = self.screens[self.current_screen_id]
