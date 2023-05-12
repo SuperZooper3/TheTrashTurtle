@@ -11,6 +11,8 @@ MAX_OBJECTS_PER_SCREEN = 14
 COLLECTION_RADIUS = 5
 PLAYER_SPEED = 2
 
+SCREEN_COUNT = 1 # THIS DOSE NOT INCLUDE FIRST AND FINAL SCREEN
+
 UP_KEYS = [pyxel.KEY_W,pyxel.KEY_UP]
 DOWN_KEYS = [pyxel.KEY_S,pyxel.KEY_DOWN]
 LEFT_KEYS = [pyxel.KEY_A,pyxel.KEY_LEFT]
@@ -43,11 +45,15 @@ TURTLE_SMALL_1 = Sprite(0,0,9,9,0)
 CRAB = Sprite(0, 28, 8, 7)
         
 class Player():
-    def __init__(self):
+    def __init__(self, screen):
         self.x = 50
         self.y = 50
+        self.current_screen = screen
 
-    def update(self) -> None:
+    def update_current_screen(self,screen):
+        self.current_screen = screen
+        
+    def update(self):
         speed = PLAYER_SPEED
         if (key_pressed(UP_KEYS) or key_pressed(DOWN_KEYS)) and (key_pressed(RIGHT_KEYS) or key_pressed(LEFT_KEYS)): # we are moving diag
             speed *= COS_45
@@ -63,6 +69,42 @@ class Player():
         
         if key_pressed(RIGHT_KEYS):
             self.x += speed
+
+        transitionStatus = "None"
+
+        if self.y < 0:
+            if not self.current_screen.type == "DOWN": # if there is no above transitoin, clip the y
+                self.y = 0
+            else: # we're going to transition next frame
+                self.y = 120 # start at the bottom of the screen
+                transitionStatus = "goUp"
+        
+        if self.y > 120: # we went past the bottom
+            if not self.current_screen.type == "UP":
+                self.y = 120
+            else: # we're going to go down
+                self.y = 0
+                transitionStatus = "goDown"
+        
+        if self.x < 0: # FIXME: MAKE SURE TOP SCREENS CANT TRASNTION
+            if self.current_screen.type == "START":
+                self.x = 0
+            else:
+                self.x = 128
+                transitionStatus = "goLeft"
+        
+        if self.x > 128:
+            if self.current_screen.type == "END":
+                self.x = 128
+            else:
+                self.x = 0
+                transitionStatus = "goRight"
+
+        # the interactions
+        if key_pressed(COLLECT_KEYS):
+            self.current_screen.collect(self.x,self.y)
+
+        return transitionStatus
 
     def draw(self) -> None:
         TURTLE_SMALL_1.draw(self.x,self.y)
@@ -118,17 +160,40 @@ class App:
         pyxel.init(128, 128, title="NDC 2023")
         pyxel.load("ndc.pyxres")
 
-        self.player = Player()
-        self.testScreen = Screen(0)
+        self.screens = {}
+
+        for i in range(1,SCREEN_COUNT+1):
+            self.screens[str(i)] = Screen(str(i),"NORMAL")
+
+        # Add the first and last sreens that will be special, but thats later
+        self.screens["0"] = Screen("0","START")
+        self.screens[str(SCREEN_COUNT+1)] = Screen(str(SCREEN_COUNT+1),"END")
+
+        self.current_screen_id = "0"
+        self.current_screen = self.screens[self.current_screen_id]
+        self.player = Player(self.current_screen)
+
+        print(self.screens)
 
         pyxel.run(self.update, self.draw)
 
     def update(self) -> None:
-        self.player.update()
+        transitionStatus = self.player.update()
+        if transitionStatus == "goRight":
+            self.current_screen_id = str(int(self.current_screen_id) + 1)
+            print(self.current_screen_id)
+        if transitionStatus == "goLeft":
+            self.current_screen_id = str(int(self.current_screen_id) - 1)
+            print(self.current_screen_id)
+        
+        self.current_screen = self.screens[self.current_screen_id]
+        self.player.update_current_screen(self.current_screen)
+
+
 
     def draw(self) -> None:
         pyxel.cls(0)
+        self.current_screen.draw()
         self.player.draw()
-        self.testScreen.draw()
 
 game = App()
