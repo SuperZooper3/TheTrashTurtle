@@ -1,5 +1,5 @@
 from math import sqrt
-from typing import Dict
+from typing import Dict, Tuple
 import pyxel
 import random
 
@@ -160,14 +160,19 @@ class Screen():
         if len(self.objects) == 0:
             return 0
         closestDist = float("inf")
-        closest = ()
+        closest: Tuple[int, int] = (-1, -1)
         for coords in self.objects.keys():
             dist = sqrt((coords[0]*8+4 - x)**2 + (coords[1]*8+4 - y)**2) # Take the distance between the player and the middle of the object tile
             if dist < closestDist:
                 closest = coords
                 closestDist = dist
         if (self.objects[closest].hidden and self.scan) or not self.objects[closest].hidden:
-            return self.objects[closest].collect() if closestDist <= COLLECTION_RADIUS else 0
+            if closestDist <= COLLECTION_RADIUS:
+                points = self.objects[closest].collect()
+                del self.objects[closest]
+                return points
+            else:
+                return 0
 
     def draw(self) -> None:
         pyxel.rect(0, 0, 128, 120, 10)
