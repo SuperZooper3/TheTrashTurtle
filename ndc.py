@@ -1,4 +1,5 @@
 from math import sqrt
+from typing import Dict
 import pyxel
 import random
 
@@ -8,8 +9,11 @@ DOCUMENTATION GOES HERE
 
 MIN_OBJECTS_PER_SCREEN = 10
 MAX_OBJECTS_PER_SCREEN = 14
+MIN_HIDDEN_OBJECTS_PER_SCREEN = 10
+MAX_HIDDEN_OBJECTS_PER_SCREEN = 14
 COLLECTION_RADIUS = 5
 PLAYER_SPEED = 2
+XRAY_DURATION = 60 # Frames
 
 SCREEN_COUNT = 1 # THIS DOSE NOT INCLUDE FIRST AND FINAL SCREEN
 
@@ -110,14 +114,15 @@ class Player():
         TURTLE_SMALL_1.draw(self.x,self.y)
 
 class Object():
-    def __init__(self, x, y):
+    def __init__(self, x, y, inputType, hidden=False):
         self.x = x
         self.y = y
-        self.type = 0
+        self.hidden = hidden
+        self.type = inputType
         self.sprite = CRAB
 
     def collect(self) -> int:
-        pass # return the amount of points related to the type of object
+        return 10
 
     def draw(self) -> None:
         self.sprite.draw(self.x*8, self.y*8)
@@ -125,17 +130,31 @@ class Object():
 class Screen():
     def __init__(self, id, inputType): # Types are "BOTTOM", "TOP", "NORMAL", "START", "END"
         self.id = id
-        self.tilemap = 0
-        self.type = inputType # Change later
+        self.tile = 0
+        self.type = inputType
+        self.scan = False
+        self.scanEnd = -1
         self.objectCount = random.randint(MIN_OBJECTS_PER_SCREEN, MAX_OBJECTS_PER_SCREEN)
-        self.objects = {}
+        self.objects: Dict[Object] = {}
         for _ in range(self.objectCount):
             x = random.randint(0, 15)
             y = random.randint(0, 14)
             while (x, y) in self.objects:
                 x = random.randint(0, 15)
                 y = random.randint(0, 14)
-            self.objects[(x, y)] = Object(x, y)
+            self.objects[(x, y)] = Object(x, y, 0, False)
+        self.hiddenObjectCount = random.randint(MIN_HIDDEN_OBJECTS_PER_SCREEN, MAX_HIDDEN_OBJECTS_PER_SCREEN)
+        for _ in range(self.objectCount):
+            x = random.randint(0, 15)
+            y = random.randint(0, 14)
+            while (x, y) in self.objects:
+                x = random.randint(0, 15)
+                y = random.randint(0, 14)
+            self.objects[(x, y)] = Object(x, y, 0, True)
+
+    def xray(self):
+        self.scanEnd = pyxel.frame_count + XRAY_DURATION
+        self.scan = True
 
     def collect(self, x, y) -> int:
         if len(self.objects) == 0:
@@ -147,13 +166,14 @@ class Screen():
             if dist < closestDist:
                 closest = coords
                 closestDist = dist
-        return self.objects[closest].collect() if closestDist <= COLLECTION_RADIUS else 0
-
+        if (self.objects[closest].hidden and self.scan) or not self.objects[closest].hidden:
+            return self.objects[closest].collect() if closestDist <= COLLECTION_RADIUS else 0
 
     def draw(self) -> None:
         pyxel.rect(0, 0, 128, 120, 10)
         for obj in self.objects.values():
-            obj.draw()
+            if (obj.hidden and pyxel.frame_count <= self.scanEnd) or not obj.hidden:
+                obj.draw()
 
 class App:
     def __init__(self):
