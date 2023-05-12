@@ -16,9 +16,10 @@ PLAYER_SPEED = 2
 XRAY_DURATION = 60 # Frames
 PLAYER_POSITION_OFFSET = 4
 OBJECT_POSITION_OFFSET = 4
-OBJECT_POINTS = 10
+OBJECT_POINTS = 1
 
-SCREEN_COUNT = 1 # THIS DOSE NOT INCLUDE FIRST AND FINAL SCREEN
+ADDITIONAL_NORMAL_SCREENS = 2 # THIS DOES NOT INCLUDE FIRST AND FINAL SCREEN, OR THE FIRST 2 NORMAL SCREENS
+UP_SCREENS = 1 # NOT COUNTED IN NORMAL SCREENS
 
 UP_KEYS = [pyxel.KEY_W,pyxel.KEY_UP]
 DOWN_KEYS = [pyxel.KEY_S,pyxel.KEY_DOWN]
@@ -238,15 +239,19 @@ class App:
         pyxel.load("ndc.pyxres")
 
         self.screens = {}
+        for i in range(1, 3):
+            self.screens[str(i)] = Screen(str(i), "NORMAL")
+        if ADDITIONAL_NORMAL_SCREENS + UP_SCREENS > 0:
+            screenOrder = ["NORMAL"]*ADDITIONAL_NORMAL_SCREENS + ["DOWN"]*UP_SCREENS
+            random.shuffle(screenOrder)
+            for i, type in enumerate(screenOrder, start=3):
+                self.screens[str(i)] = Screen(str(i), type)
+                if type == "DOWN":
+                    self.screens[f"{i}*"] = Screen(f"{i}*", "UP")
 
-        for i in range(1,SCREEN_COUNT+1):
-            self.screens[str(i)] = Screen(str(i),"DOWN")
-        
-        self.screens["1*"] = Screen("1*","UP")
-
-        # Add the first and last sreens that will be special, but thats later
+        # Add the first and last screens that will be special, but thats later
         self.screens["0"] = Screen("0","START")
-        self.screens[str(SCREEN_COUNT+1)] = Screen(str(SCREEN_COUNT+1),"END")
+        self.screens[str(UP_SCREENS+ADDITIONAL_NORMAL_SCREENS+3)] = Screen(str(UP_SCREENS+ADDITIONAL_NORMAL_SCREENS+3),"END")
 
         self.current_screen_id = "0"
         self.current_screen = self.screens[self.current_screen_id]
