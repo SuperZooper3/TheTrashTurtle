@@ -1,3 +1,4 @@
+from math import sqrt
 import pyxel
 import random
 
@@ -7,6 +8,7 @@ DOCUMENTATION GOES HERE
 
 MIN_OBJECTS_PER_SCREEN = 100
 MAX_OBJECTS_PER_SCREEN = 140
+COLLECTION_RADIUS = 5
 PLAYER_SPEED = 2
 
 UP_KEYS = [pyxel.KEY_W,pyxel.KEY_UP]
@@ -68,28 +70,42 @@ class Object():
     def __init__(self, x, y):
         self.x = x
         self.y = y
+        self.type = 0
 
-    def update(self) -> None:
-        pass
+    def collect(self) -> int:
+        pass # return the amount of points related to the type of object
 
     def draw(self) -> None:
-        pass 
+        pass # add drawing the proper sprite
     
 class Screen():
-    def __init__(self):
+    def __init__(self, id):
+        self.id = id
+        self.tilemap = 0
         self.objectCount = random.randint(MIN_OBJECTS_PER_SCREEN, MAX_OBJECTS_PER_SCREEN)
-        self.objects = []
-        self.objectCoords = []
+        self.objects = {}
         for _ in range(self.objectCount):
             x = random.randint(0, 15)
             y = random.randint(0, 14)
-            while (x, y) in self.objectCoords:
+            while (x, y) in self.objects:
                 x = random.randint(0, 15)
                 y = random.randint(0, 14)
-            self.objectCoords.append((x, y))
-            self.objects.append(Object(x, y))
+            self.objects[(x, y)] = Object(x, y)
 
-    def draw(self) -> None:
+    def collect(self, x, y) -> int:
+        if len(self.objects) == 0:
+            return 0
+        closestDist = float("inf")
+        closest = ()
+        for coords in self.objects.keys():
+            dist = sqrt((coords[0]*8+4 - x)**2 + (coords[1]*8+4 - y)**2) # Take the distance between the player and the middle of the object tile
+            if dist < closestDist:
+                closest = coords
+                closestDist = dist
+        return self.objects[closest].collect() if closestDist <= COLLECTION_RADIUS else 0
+
+
+    def draw(self) -> None: # also add drawing the proper tile map
         for obj in self.objects:
             obj.draw()
 
