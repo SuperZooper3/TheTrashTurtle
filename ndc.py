@@ -4,7 +4,12 @@ import pyxel
 import random
 
 """
-THE TRASH TURTLE
+Bienvenue à la plage ! Les bébés tortues ne vont pas tarder à éclore de leurs œufs. Vous êtes la maman tortue, 
+"The Trash Turtle", chargée de nettoyer la plage et de dégager le chemin pour que vos bébés puissent atteindre 
+l'océan en toute sécurité. Vous pouvez vous déplacer à l'aide des touches WASD ou les flèches. Pour ramasser les 
+déchets sur la plage, appuyez sur la touche ESPACE. Plusieurs mécanismes se révéleront à vous si vous tentez de 
+jouer plusieurs fois. Déplacez vous vers la droite pour explorer la plage. Ramassez le plus de déchets possible et 
+voyez votre sac-poubelle augmenter pour sauver tous les bébés tortues ! Bonne chance !
 """
 
 MIN_OBJECTS_PER_SCREEN = 7
@@ -45,11 +50,11 @@ SCREEN_TEXTS = {
     "3":"D",
     }
 
-INTRO_TEXT = "Welcome text goes here"
-XRAY_TEXT = "xray text goes here"
-GO_UP_TEXT = "go up text goes here"
-ALL_W_TEXT = "YOU WON MOTHERFUCKER"
-FINAL_TEXT = "YOU SAVED THE TURTLES"
+INTRO_TEXT = "Bienvenue à la plage ! Les bébés tortues ne vont pas tarder à éclore de leurs œufs. Vous êtes la maman tortue, 'The Trash Turtle', chargée de nettoyer la plage et de dégager le chemin pour que vos bébés puissent atteindre l'océan en toute sécurité. Vous pouvez vous déplacer à l'aide des touches WASD ou les flèches. Pour ramasser les déchets sur la plage, appuyez sur la touche ESPACE. Plusieurs mécanismes se révéleront à vous si vous tentez de jouer plusieurs fois. Déplacez vous vers la droite pour explorer la plage. Ramassez le plus de déchets possible et voyez votre sac-poubelle augmenter pour sauver tous les bébés tortues ! Bonne chance !"
+XRAY_TEXT = "Essayez de jouer à nouveau et appuyez sur la touche J pour utiliser vos pouvoirs X-RAY et révéler plus de déchets."
+GO_UP_TEXT = "Essayez de jouer à nouveau et quand vous voyez un trèfle à quatre feuilles déplacez-vous vers le haut pour découvrir un espace secret de la plage."
+ALL_W_TEXT = "Vous avez découvert tous les secrets de la plage et vous avez réussi à trouver tous les déchets ! Bien joué !"
+FINAL_TEXT = "Félicitations, vous avez ramassé THIS MUCH déchets ! Mais il reste encore beaucoup de déchets sur terre. Nous devons faire attention à ne pas laisser de déchets sur la plage ou dans l'océan, car cela peut nuire aux tortues. Nous pouvons tous aider à sauver les tortues en faisant notre part pour protéger l'environnement et les océans."
 
 # make sure to buffer the screen texts so that 
 
