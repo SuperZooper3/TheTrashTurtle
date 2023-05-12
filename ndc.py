@@ -1,4 +1,5 @@
 from math import sqrt
+from typing import Dict
 import pyxel
 import random
 
@@ -92,7 +93,7 @@ class Screen():
         self.scan = False
         self.scanEnd = -1
         self.objectCount = random.randint(MIN_OBJECTS_PER_SCREEN, MAX_OBJECTS_PER_SCREEN)
-        self.objects = {}
+        self.objects: Dict[Object] = {}
         for _ in range(self.objectCount):
             x = random.randint(0, 15)
             y = random.randint(0, 14)
