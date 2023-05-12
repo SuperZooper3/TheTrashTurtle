@@ -4,12 +4,13 @@ import pyxel
 import random
 
 """
-Bienvenue à la plage ! Les bébés tortues ne vont pas tarder à éclore de leurs œufs. Vous êtes la maman tortue, 
-"The Trash Turtle", chargée de nettoyer la plage et de dégager le chemin pour que vos bébés puissent atteindre 
-l'océan en toute sécurité. Vous pouvez vous déplacer à l'aide des touches WASD ou les flèches. Pour ramasser les 
-déchets sur la plage, appuyez sur la touche ESPACE. Plusieurs mécanismes se révéleront à vous si vous tentez de 
-jouer plusieurs fois. Déplacez vous vers la droite pour explorer la plage. Ramassez le plus de déchets possible et 
-voyez votre sac-poubelle augmenter pour sauver tous les bébés tortues ! Bonne chance !
+Bienvenue à la plage ! Les bébés tortues vont bientôt éclore de leurs œufs. Vous êtes la maman tortue "The Trash Turtle", 
+chargée de nettoyer la plage et de dégager le chemin pour que vos bébés puissent atteindre l'océan en toute sécurité. Utilisez 
+les touches WASD ou les flèches pour vous déplacer et ESPACE pour ramasser les déchets. Plusieurs mécanismes se révéleront à 
+vous si vous jouez plusieurs fois. Explorez la plage en allant vers la droite, ramassez un maximum de déchets pour remplir 
+votre sac-poubelle et sauvez tous les bébés tortues ! La taille de votre sac-poubelle dépend du nombre de déchets que vous 
+avez ramassés, alors en ramassant plus de déchets, vous sauvez plus de tortues. Le joueur avec le plus grand sac-poubelle gagne. 
+Bonne chance !
 """
 
 MIN_OBJECTS_PER_SCREEN: int = 7
