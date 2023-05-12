@@ -216,7 +216,7 @@ class Player():
             self.current_screen.xray()
             self.hasXrayed = True
 
-        return transitionStatus
+        return transitionStatus, self.points
 
     def draw(self) -> None:
         BIG_TURTULES[self.lastDirection][int(pyxel.frame_count/FRAMES_PER_BIG_WALK)%len(BIG_TURTULES[self.lastDirection])].draw(self.x-PLAYER_POSITION_OFFSET[0],self.y-PLAYER_POSITION_OFFSET[1])
@@ -385,13 +385,15 @@ class App:
         self.started = False
         self.finished = False
         self.playerControl = False
+        self.cutscenePlaying = False
+        self.cutscene = None
 
         pyxel.run(self.update, self.draw)
 
     def update(self) -> None:
-        if self.started:
+        if self.started and not self.cutscenePlaying:
             if self.playerControl: 
-                transitionStatus = self.player.update()
+                transitionStatus,points = self.player.update()
                 if transitionStatus == "goRight":
                     self.current_screen_id = str(int(self.current_screen_id) + 1)
 
@@ -406,12 +408,13 @@ class App:
 
                 if transitionStatus == "cutscene": # they've triggered the end of the game
                     self.playerControl = False
-                    print("Game cutsente hit")
+                    self.cutscenePlaying = True
+                    self.cutscene = Cutscene(int(MAX_SMALL_TURTLES*points/self.totalTrash))
             
             self.current_screen = self.screens[self.current_screen_id]
             self.player.update_current_screen(self.current_screen)
-            if key_pressed([pyxel.KEY_P]):
-                self.finished = True
+        elif self.cutscenePlaying: 
+            self.cutscene.update()
         else:
             if key_pressed(COLLECT_KEYS):
                 self.started = True
@@ -421,6 +424,12 @@ class App:
     def draw(self) -> None:
         pyxel.cls(0)
         self.current_screen.draw()
+
+        if self.cutscenePlaying:
+            self.cutscene.draw()
+            if self.cutscene.over:
+                self.finished = True
+
         self.player.draw()
 
         if not self.started:
