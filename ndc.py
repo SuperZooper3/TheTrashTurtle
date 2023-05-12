@@ -91,12 +91,12 @@ NORMAL_TILEMAP_1 = Tilemap(0,0,0)
 NORMAL_TILEMAP_2 = Tilemap(0,128,128)
 NORMAL_TILEMAP_3 = Tilemap(0,256,0)
 NORMAL_TILEMAP_4 = Tilemap(0,384,0)
-NORMAL_TILEMAP_SECRET = Tilemap(0,256,128)
+SECRET_TILEMAP = Tilemap(0,256,128)
 
 START_TILEMAP = Tilemap(0,0,128)
 END_TILEMAP = Tilemap(0,128,0)
 
-NORMAL_TILEMAPS = [NORMAL_TILEMAP_1]
+NORMAL_TILEMAPS = [NORMAL_TILEMAP_1, NORMAL_TILEMAP_2, NORMAL_TILEMAP_3, NORMAL_TILEMAP_4]
 
 TURTLE_SMALL_1 = Sprite(0,0,9,9,0)
 TURTLE_SMALL_2 = Sprite(0,10,7,9,0)
@@ -254,7 +254,7 @@ class Object():
         self.sprite.draw(self.x*10+4, self.y*10+5)
     
 class Screen():
-    def __init__(self, id, inputType): # Types are "BOTTOM", "TOP", "NORMAL", "START", "END"
+    def __init__(self, id, inputType): # Types are "DOWN", "UP", "NORMAL", "START", "END"
         self.id = id
         self.type = inputType
         self.scan = False
@@ -263,6 +263,8 @@ class Screen():
             self.tilemap = START_TILEMAP
         elif self.type == "END":
             self.tilemap = END_TILEMAP
+        elif self.type == "UP":
+            self.tilemap = SECRET_TILEMAP
         else:
             self.tilemap = random.choice(NORMAL_TILEMAPS)
         if self.type not in ("START", "END"):
