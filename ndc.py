@@ -21,7 +21,7 @@ MAX_HIDDEN_OBJECTS_PER_SCREEN: int = 7
 COLLECTION_RADIUS: int = 10
 PLAYER_SPEED: int = 2
 SMALL_TURTLE_SPEED: int = 1
-XRAY_DURATION: int = 60 # Frames
+XRAY_DURATION: int = 60  # Frames
 PLAYER_POSITION_OFFSET: Tuple[int, int] = (4, 4)
 SMALL_TURTLE_POSITION_OFFSET: Tuple[int, int] = (4, 4)
 OBJECT_POSITION_OFFSET: Tuple[int, int] = (5, 5)
@@ -29,16 +29,16 @@ OBJECT_POINTS: int = 1
 SMALL_TURTLE_STOP: int = 160
 MAX_SMALL_TURTLES: int = 50
 
-ADDITIONAL_NORMAL_SCREENS: int = 1 # THIS DOES NOT INCLUDE FIRST AND FINAL SCREEN, OR THE FIRST 2 NORMAL SCREENS
-UP_SCREENS: int = 3 # NOT COUNTED IN NORMAL SCREENS
+ADDITIONAL_NORMAL_SCREENS: int = 1  # THIS DOES NOT INCLUDE FIRST AND FINAL SCREEN, OR THE FIRST 2 NORMAL SCREENS
+UP_SCREENS: int = 3  # NOT COUNTED IN NORMAL SCREENS
 
 FRAMES_PER_BIG_WALK: int = 10
 FRAMES_PER_SMALL_WALK: int = 10
 
-UP_KEYS: List[int] = [pyxel.KEY_W,pyxel.KEY_UP]
-DOWN_KEYS: List[int] = [pyxel.KEY_S,pyxel.KEY_DOWN]
-LEFT_KEYS: List[int] = [pyxel.KEY_A,pyxel.KEY_LEFT]
-RIGHT_KEYS: List[int] = [pyxel.KEY_D,pyxel.KEY_RIGHT]
+UP_KEYS: List[int] = [pyxel.KEY_W, pyxel.KEY_UP]
+DOWN_KEYS: List[int] = [pyxel.KEY_S, pyxel.KEY_DOWN]
+LEFT_KEYS: List[int] = [pyxel.KEY_A, pyxel.KEY_LEFT]
+RIGHT_KEYS: List[int] = [pyxel.KEY_D, pyxel.KEY_RIGHT]
 COLLECT_KEYS: List[int] = [pyxel.KEY_SPACE]
 XRAY_KEYS: List[int] = [pyxel.KEY_J]
 
@@ -46,19 +46,20 @@ XRAY_KEYS: List[int] = [pyxel.KEY_J]
 COS_45: float = 0.707
 
 SCREEN_TEXTS = {
-    "0":"Les tortues sont des animaux",
-    "1":"majestueux. En travaillant",
-    "2":"ensemble pour proteger les",
-    "3":"tortues et leur habitat, nous",
-    "4":"pouvons contribuer a preserver",
-    "5":"ces animaux. Travaillons",
-    "6":"ensemble pour l'ODD 14.",
-    "7":"ESPACE sur poubelle pour finir",
-    "3*":"Ha ha! Un secret!",
-    "4*":"Quel beau gazon!",
-    "5*":"Ramassez vos ordures",
-    "6*":"J'aime les tortues <3"
-    }
+    "0": "Les tortues sont des animaux",
+    "1": "majestueux. En travaillant",
+    "2": "ensemble pour proteger les",
+    "3": "tortues et leur habitat, nous",
+    "4": "pouvons contribuer a preserver",
+    "5": "ces animaux. Travaillons",
+    "6": "ensemble pour l'ODD 14.",
+    "7": "ESPACE sur poubelle pour finir",
+    "3*": "Ha ha! Un secret!",
+    "4*": "Quel beau gazon!",
+    "5*": "Ramassez vos ordures",
+    "6*": "J'aime les tortues <3"
+}
+
 
 def insertReturns(text):
     # places \n every 27 characters
@@ -71,19 +72,20 @@ def insertReturns(text):
             outtext += "\n"
     return outtext
 
+
 INTRO_TEXT = insertReturns("Bienvenue a la plage! Vos bebes tortues vont naitre bientot. Vous etes la maman, 'The Trash Turtle', chargee de nettoyer la plage et de degager le chemin pour que vos bebes puissent atteindre l'ocean en toute securite. Deplacez-vous a l'aide des touches WASD ou des fleches. Pour ramasser les dechets, tapez la touche ESPACE. D'autres mecanismes se reveleront a vous si vous jouez plusieurs fois. Bonne chance! Taper sur ESPACE")
 XRAY_TEXT = insertReturns("Essayez de jouer a nouveau et appuyez sur la touche J pour utiliser vos pouvoirs X-RAY et reveler plus de dechets.")
 GO_UP_TEXT = insertReturns("Essayez de jouer a nouveau et quand vous voyez un trefle a quatre feuilles deplacez-vous vers le haut pour decouvrir un espace secret de la plage.")
 ALL_W_TEXT = insertReturns("Vous avez decouvert tous les secrets de la plage et vous avez reussi a trouver tous les dechets! Bien joue!")
 FINAL_TEXT = insertReturns("Felicitations, vous avez ramasse THIS MUCH dechets! Mais il en reste encore beacoup. Faites attention a ne pas laisser de dechets sur la plage ou dans l'ocean. Nous pouvons tous aider a sauver les tortues en faisant notre part pour proteger l'environnement et les oceans")
 
-# make sure to buffer the screen texts so that 
 
 def key_pressed(keygroup: List[int]) -> bool:
     for key in keygroup:
         if pyxel.btn(key):
             return True
     return False
+
 
 class Sprite():
     def __init__(self, u: int, v: int, w: int, h: int, colkey=None) -> None:
@@ -92,13 +94,14 @@ class Sprite():
         self.v: int = v
         self.w: int = w
         self.h: int = h
-        self.colkey= colkey
+        self.colkey = colkey
 
     def draw(self, x: int, y: int) -> None:
         pyxel.blt(x, y, self.img, self.u, self.v, self.w, self.h, self.colkey)
 
+
 class Tilemap():
-    def __init__(self, tm: int, u: int, v: int, w: int=128, h: int=128) -> None:
+    def __init__(self, tm: int, u: int, v: int, w: int = 128, h: int = 128) -> None:
         self.tm: int = tm
         self.u: int = u
         self.v: int = v
@@ -108,70 +111,75 @@ class Tilemap():
     def draw(self, x, y) -> None:
         pyxel.bltm(x, y, self.tm, self.u, self.v, self.w, self.h)
 
-NORMAL_TILEMAP_1: Tilemap = Tilemap(0,0,0)
-NORMAL_TILEMAP_2: Tilemap = Tilemap(0,128,128)
-NORMAL_TILEMAP_3: Tilemap = Tilemap(0,256,0)
-NORMAL_TILEMAP_4: Tilemap = Tilemap(0,384,0)
-SECRET_TILEMAP: Tilemap = Tilemap(0,256,128)
 
-START_TILEMAP: Tilemap = Tilemap(0,0,128)
-END_TILEMAP: Tilemap = Tilemap(0,128,0)
+NORMAL_TILEMAP_1: Tilemap = Tilemap(0, 0, 0)
+NORMAL_TILEMAP_2: Tilemap = Tilemap(0, 128, 128)
+NORMAL_TILEMAP_3: Tilemap = Tilemap(0, 256, 0)
+NORMAL_TILEMAP_4: Tilemap = Tilemap(0, 384, 0)
+SECRET_TILEMAP: Tilemap = Tilemap(0, 256, 128)
 
-NORMAL_TILEMAPS: List[Tilemap] = [NORMAL_TILEMAP_1, NORMAL_TILEMAP_2, NORMAL_TILEMAP_3, NORMAL_TILEMAP_4]
+START_TILEMAP: Tilemap = Tilemap(0, 0, 128)
+END_TILEMAP: Tilemap = Tilemap(0, 128, 0)
 
-TURTLE_SMALL_1: Sprite = Sprite(0,0,9,9,0)
-TURTLE_SMALL_2: Sprite = Sprite(0,10,7,9,0)
-TURTLE_SMALL_3: Sprite = Sprite(0,18,9,9,0)
+NORMAL_TILEMAPS: List[Tilemap] = [NORMAL_TILEMAP_1,
+                                  NORMAL_TILEMAP_2, NORMAL_TILEMAP_3, NORMAL_TILEMAP_4]
 
-SMALL_TURTULES: List[Sprite] = [TURTLE_SMALL_1,TURTLE_SMALL_2,TURTLE_SMALL_3]
+TURTLE_SMALL_1: Sprite = Sprite(0, 0, 9, 9, 0)
+TURTLE_SMALL_2: Sprite = Sprite(0, 10, 7, 9, 0)
+TURTLE_SMALL_3: Sprite = Sprite(0, 18, 9, 9, 0)
 
-BIG_TURTULE_1_RIGHT = Sprite(48,0,16,16,0)
-BIG_TURTULE_2_RIGHT = Sprite(48,16,16,16,0)
+SMALL_TURTLES: List[Sprite] = [TURTLE_SMALL_1, TURTLE_SMALL_2, TURTLE_SMALL_3]
 
-BIG_TURTULE_1_LEFT = Sprite(48,32,16,16,0)
-BIG_TURTULE_2_LEFT = Sprite(64,32,16,16,0)
+BIG_TURTLE_1_RIGHT = Sprite(48, 0, 16, 16, 0)
+BIG_TURTLE_2_RIGHT = Sprite(48, 16, 16, 16, 0)
 
-BIG_TURTULE_1_UP = Sprite(48,48,16,16,0)
-BIG_TURTULE_2_UP = Sprite(64,48,16,16,0)
+BIG_TURTLE_1_LEFT = Sprite(48, 32, 16, 16, 0)
+BIG_TURTLE_2_LEFT = Sprite(64, 32, 16, 16, 0)
 
-BIG_TURTULE_1_DOWN = Sprite(64,0,16,16,0)
-BIG_TURTULE_2_DOWN = Sprite(64,16,16,16,0)
+BIG_TURTLE_1_UP = Sprite(48, 48, 16, 16, 0)
+BIG_TURTLE_2_UP = Sprite(64, 48, 16, 16, 0)
 
-BIG_TURTULES = [[BIG_TURTULE_1_RIGHT,BIG_TURTULE_2_RIGHT],[BIG_TURTULE_1_LEFT,BIG_TURTULE_2_LEFT],[BIG_TURTULE_1_UP,BIG_TURTULE_2_UP],[BIG_TURTULE_1_DOWN,BIG_TURTULE_2_DOWN]]
+BIG_TURTLE_1_DOWN = Sprite(64, 0, 16, 16, 0)
+BIG_TURTLE_2_DOWN = Sprite(64, 16, 16, 16, 0)
 
-TRASH_BAG_1 = Sprite(16,72,16,16,7)
-TRASH_BAG_2 = Sprite(32,72,16,16,7)
-TRASH_BAG_3 = Sprite(0,72,16,16,7)
-TRASH_BAG_4 = Sprite(0,88,16,16,7)
-TRASH_BAG_5 = Sprite(16,88,16,16,7)
-TRASH_BAG_GOLDEN = Sprite(16,224,16,16,7)
+BIG_TURTLES = [[BIG_TURTLE_1_RIGHT, BIG_TURTLE_2_RIGHT], [BIG_TURTLE_1_LEFT, BIG_TURTLE_2_LEFT], [
+    BIG_TURTLE_1_UP, BIG_TURTLE_2_UP], [BIG_TURTLE_1_DOWN, BIG_TURTLE_2_DOWN]]
 
-TRASH_BAGS = [TRASH_BAG_1, TRASH_BAG_2, TRASH_BAG_3, TRASH_BAG_4, TRASH_BAG_5, TRASH_BAG_GOLDEN]
+TRASH_BAG_1 = Sprite(16, 72, 16, 16, 7)
+TRASH_BAG_2 = Sprite(32, 72, 16, 16, 7)
+TRASH_BAG_3 = Sprite(0, 72, 16, 16, 7)
+TRASH_BAG_4 = Sprite(0, 88, 16, 16, 7)
+TRASH_BAG_5 = Sprite(16, 88, 16, 16, 7)
+TRASH_BAG_GOLDEN = Sprite(16, 224, 16, 16, 7)
 
-SODA_CAN = Sprite(0,152,10,10,7)
-X_SODA_CAN = Sprite(0,163,10,10,7)
+TRASH_BAGS = [TRASH_BAG_1, TRASH_BAG_2, TRASH_BAG_3,
+              TRASH_BAG_4, TRASH_BAG_5, TRASH_BAG_GOLDEN]
 
-STRAWS = Sprite(0,174,10,10,7)
-X_STRAWS = Sprite(0,185,10,10,7)
+SODA_CAN = Sprite(0, 152, 10, 10, 7)
+X_SODA_CAN = Sprite(0, 163, 10, 10, 7)
 
-CIG = Sprite(0,196,10,10,7)
-X_CIG = Sprite(0,207,10,10,7)
+STRAWS = Sprite(0, 174, 10, 10, 7)
+X_STRAWS = Sprite(0, 185, 10, 10, 7)
 
-CLOVER = Sprite(24,168,10,10,7)
+CIG = Sprite(0, 196, 10, 10, 7)
+X_CIG = Sprite(0, 207, 10, 10, 7)
 
-GARBAGE_CAN = Sprite(0,224,16,16,11)
+CLOVER = Sprite(24, 168, 10, 10, 7)
+
+GARBAGE_CAN = Sprite(0, 224, 16, 16, 11)
 
 CRAB = Sprite(0, 28, 8, 7)
 
 NORMAL_SPRITES = [SODA_CAN, STRAWS, CIG]
 HIDDEN_SPRITES = [X_SODA_CAN, X_STRAWS, X_CIG]
-        
+
+
 class Player():
     def __init__(self, screen, totalTrash):
         self.x = 50
         self.y = 50
         self.current_screen = screen
-        self.lastDirection = 0 # 0 is right 1 is left 2 is up 3 is down
+        self.lastDirection = 0  # 0 is right 1 is left 2 is up 3 is down
         self.points = 0
         self.totalTrash = totalTrash
 
@@ -179,18 +187,18 @@ class Player():
         self.hasUped = False
         self.noBag = False
 
-    def update_current_screen(self,screen):
+    def update_current_screen(self, screen):
         self.current_screen = screen
-        
+
     def update(self):
         speed = PLAYER_SPEED
-        if (key_pressed(UP_KEYS) or key_pressed(DOWN_KEYS)) and (key_pressed(RIGHT_KEYS) or key_pressed(LEFT_KEYS)): # we are moving diag
+        if (key_pressed(UP_KEYS) or key_pressed(DOWN_KEYS)) and (key_pressed(RIGHT_KEYS) or key_pressed(LEFT_KEYS)):  # we are moving diag
             speed *= COS_45
-        
+
         if key_pressed(UP_KEYS):
             self.y -= speed
             self.lastDirection = 2
-        
+
         if key_pressed(DOWN_KEYS):
             self.y += speed
             self.lastDirection = 3
@@ -198,7 +206,7 @@ class Player():
         if key_pressed(LEFT_KEYS):
             self.x -= speed
             self.lastDirection = 1
-        
+
         if key_pressed(RIGHT_KEYS):
             self.x += speed
             self.lastDirection = 0
@@ -206,27 +214,27 @@ class Player():
         transitionStatus = "None"
 
         if self.y < 0:
-            if not self.current_screen.type == "DOWN": # if there is no above transition, clip the y
+            if not self.current_screen.type == "DOWN":  # if there is no above transition, clip the y
                 self.y = 0
-            else: # we're going to transition next frame
-                self.y = 120 # start at the bottom of the screen
+            else:  # we're going to transition next frame
+                self.y = 120  # start at the bottom of the screen
                 transitionStatus = "goUp"
                 self.hasUped = True
-        
-        if self.y > 120: # we went past the bottom
+
+        if self.y > 120:  # we went past the bottom
             if not self.current_screen.type == "UP":
                 self.y = 120
-            else: # we're going to go down
+            else:  # we're going to go down
                 self.y = 0
                 transitionStatus = "goDown"
-        
-        if self.x < 0: # FIXME: MAKE SURE TOP SCREENS CANT TRASNTION
+
+        if self.x < 0:  # FIXME: MAKE SURE TOP SCREENS CANT TRASNTION
             if self.current_screen.type == "START" or self.current_screen.type == "UP":
                 self.x = 0
             else:
                 self.x = 128
                 transitionStatus = "goLeft"
-        
+
         if self.x > 128:
             if self.current_screen.type == "END" or self.current_screen.type == "UP":
                 self.x = 128
@@ -236,13 +244,14 @@ class Player():
 
         # the interactions
         if key_pressed(COLLECT_KEYS):
-            self.points += self.current_screen.collect(self.x,self.y)
-            self.current_screen.collect(self.x,self.y)
+            self.points += self.current_screen.collect(self.x, self.y)
+            self.current_screen.collect(self.x, self.y)
 
-            if self.current_screen.type == "END" and self.x > 60 and (self.y < 20 or self.y > 80): # Trigger the final cutscene
+            # Trigger the final cutscene
+            if self.current_screen.type == "END" and self.x > 60 and (self.y < 20 or self.y > 80):
                 transitionStatus = "cutscene"
                 self.noBag = True
-        
+
         if key_pressed(XRAY_KEYS):
             self.current_screen.xray()
             self.hasXrayed = True
@@ -250,10 +259,11 @@ class Player():
         return transitionStatus, self.points
 
     def draw(self) -> None:
-        BIG_TURTULES[self.lastDirection][int(pyxel.frame_count/FRAMES_PER_BIG_WALK)%len(BIG_TURTULES[self.lastDirection])].draw(self.x-PLAYER_POSITION_OFFSET[0],self.y-PLAYER_POSITION_OFFSET[1])
+        BIG_TURTLES[self.lastDirection][int(pyxel.frame_count/FRAMES_PER_BIG_WALK) % len(BIG_TURTLES[self.lastDirection])].draw(self.x-PLAYER_POSITION_OFFSET[0], self.y-PLAYER_POSITION_OFFSET[1])
         trashIndex = int((len(TRASH_BAGS)-1)*self.points/self.totalTrash)
         if not self.noBag:
-            TRASH_BAGS[trashIndex].draw(self.x-4,self.y-8)
+            TRASH_BAGS[trashIndex].draw(self.x-4, self.y-8)
+
 
 class Object():
     def __init__(self, x, y, clover, hidden=False):
@@ -273,9 +283,10 @@ class Object():
 
     def draw(self) -> None:
         self.sprite.draw(self.x*10+4, self.y*10+5)
-    
+
+
 class Screen():
-    def __init__(self, id, inputType): # Types are "DOWN", "UP", "NORMAL", "START", "END"
+    def __init__(self, id, inputType):  # Types are "DOWN", "UP", "NORMAL", "START", "END"
         self.id = id
         self.type = inputType
         self.scan = False
@@ -330,7 +341,8 @@ class Screen():
             closestDist = float("inf")
             closest: Tuple[int, int] = (-1, -1)
             for coords in self.objects.keys():
-                dist = sqrt((coords[0]*10+4+OBJECT_POSITION_OFFSET[0] - x)**2 + (coords[1]*10+5+OBJECT_POSITION_OFFSET[1] - y)**2) # Take the distance between the player and the middle of the object tile
+                # Take the distance between the player and the middle of the object tile
+                dist = sqrt((coords[0]*10+4+OBJECT_POSITION_OFFSET[0] - x)** 2 + (coords[1]*10+5+OBJECT_POSITION_OFFSET[1] - y)**2)
                 if dist < closestDist:
                     closest = coords
                     closestDist = dist
@@ -348,7 +360,7 @@ class Screen():
                 if (obj.hidden and pyxel.frame_count <= self.scanEnd) or not obj.hidden:
                     obj.draw()
 
-        pyxel.text(1,121,SCREEN_TEXTS.get(self.id,""),0)
+        pyxel.text(1, 121, SCREEN_TEXTS.get(self.id, ""), 0)
 
 
 class SmallTurtle:
@@ -356,14 +368,14 @@ class SmallTurtle:
         self.x = x
         self.y = y
         self.speed = SMALL_TURTLE_SPEED
-    
+
     def update(self):
         self.x += self.speed
         if self.x >= SMALL_TURTLE_STOP:
             self.speed = 0
-    
+
     def draw(self) -> None:
-        SMALL_TURTULES[int(pyxel.frame_count/FRAMES_PER_SMALL_WALK)%len(SMALL_TURTULES)].draw(self.x-SMALL_TURTLE_POSITION_OFFSET[0],self.y-SMALL_TURTLE_POSITION_OFFSET[1])
+        SMALL_TURTLES[int(pyxel.frame_count/FRAMES_PER_SMALL_WALK) % len(SMALL_TURTLES)].draw(self.x-SMALL_TURTLE_POSITION_OFFSET[0], self.y-SMALL_TURTLE_POSITION_OFFSET[1])
 
 
 class Cutscene:
@@ -372,7 +384,7 @@ class Cutscene:
         self.smallTurtles: List[SmallTurtle] = []
         for _ in range(numTurtles):
             self.smallTurtles.append(SmallTurtle(random.randint(-305, -5), random.randint(25, 95)))
-    
+
     def update(self) -> None:
         for turtle in self.smallTurtles:
             turtle.update()
@@ -381,7 +393,7 @@ class Cutscene:
                 break
         else:
             self.over = True
-    
+
     def draw(self) -> None:
         for turtle in self.smallTurtles:
             turtle.draw()
@@ -404,8 +416,8 @@ class App:
                     self.screens[f"{i}*"] = Screen(f"{i}*", "UP")
 
         # Add the first and last screens that will be special, but thats later
-        self.screens["0"] = Screen("0","START")
-        self.screens[str(UP_SCREENS+ADDITIONAL_NORMAL_SCREENS+3)] = Screen(str(UP_SCREENS+ADDITIONAL_NORMAL_SCREENS+3),"END")
+        self.screens["0"] = Screen("0", "START")
+        self.screens[str(UP_SCREENS+ADDITIONAL_NORMAL_SCREENS+3)] = Screen(str(UP_SCREENS+ADDITIONAL_NORMAL_SCREENS+3), "END")
 
         self.totalTrash = 0
         for screen in self.screens.values():
@@ -413,7 +425,7 @@ class App:
 
         self.current_screen_id = "0"
         self.current_screen = self.screens[self.current_screen_id]
-        self.player = Player(self.current_screen,self.totalTrash)
+        self.player = Player(self.current_screen, self.totalTrash)
 
         self.started = False
         self.finished = False
@@ -425,34 +437,33 @@ class App:
 
     def update(self) -> None:
         if self.started and not self.cutscenePlaying:
-            if self.playerControl: 
+            if self.playerControl:
                 transitionStatus, self.points = self.player.update()
                 if transitionStatus == "goRight":
                     self.current_screen_id = str(int(self.current_screen_id) + 1)
 
                 if transitionStatus == "goLeft":
                     self.current_screen_id = str(int(self.current_screen_id) - 1)
-                
+
                 if transitionStatus == "goUp":
                     self.current_screen_id = self.current_screen_id + "*"
 
                 if transitionStatus == "goDown":
                     self.current_screen_id = self.current_screen_id[:-1]
 
-                if transitionStatus == "cutscene": # they've triggered the end of the game
+                if transitionStatus == "cutscene":  # they've triggered the end of the game
                     self.playerControl = False
                     self.cutscenePlaying = True
                     self.cutscene = Cutscene(int(MAX_SMALL_TURTLES*self.points/self.totalTrash))
-            
+
             self.current_screen = self.screens[self.current_screen_id]
             self.player.update_current_screen(self.current_screen)
-        elif self.cutscenePlaying: 
+        elif self.cutscenePlaying:
             self.cutscene.update()
         else:
             if key_pressed(COLLECT_KEYS):
                 self.started = True
                 self.playerControl = True
-            
 
     def draw(self) -> None:
         pyxel.cls(0)
@@ -466,12 +477,12 @@ class App:
         self.player.draw()
 
         if not self.started:
-            pyxel.rect(10,10,110,100,0)
-            pyxel.text(12,12,INTRO_TEXT,7)
+            pyxel.rect(10, 10, 110, 100, 0)
+            pyxel.text(12, 12, INTRO_TEXT, 7)
 
         if self.finished:
-            pyxel.rect(10,10,110,100,0)
-            # Write text depending 
+            pyxel.rect(10, 10, 110, 100, 0)
+            # Write text depending
             finalText = "final text here"
             if not self.player.hasXrayed:
                 finalText = XRAY_TEXT
@@ -479,8 +490,8 @@ class App:
                 finalText = GO_UP_TEXT
             else:
                 finalText = ALL_W_TEXT
-            pyxel.text(12,12,FINAL_TEXT.replace("THIS MUCH", str(self.points)),7)
-            pyxel.text(12,74,finalText,7)
-            
+            pyxel.text(12, 12, FINAL_TEXT.replace("THIS MUCH", str(self.points)), 7)
+            pyxel.text(12, 74, finalText, 7)
+
 
 game = App()
